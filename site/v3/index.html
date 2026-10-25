@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>topopt: make a 3D part lighter and keep it stiff</title>
+<meta name="description" content="topopt is a tool for 3D topology optimization. Give it the loads and the places that must stay. It writes a smooth STL file that you can print.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f4f3ef">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../fonts/space-grotesk/SpaceGrotesk-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script src="page.js" defer></script>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap bar-row">
+    <a class="brand" href="#top">topopt</a>
+    <a class="bar-link" href="https://github.com/chartergroup/topopt-demo">GitHub</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap stage">
+
+    <div class="copy">
+      <div class="intro">
+        <h1>Make a 3D part lighter and keep it stiff.</h1>
+        <p class="lead">It writes a smooth STL file that you can print.</p>
+      </div>
+
+      <section class="install" aria-labelledby="install-title">
+        <div class="cmd-box">
+          <div class="cmd-head">
+            <h2 class="label" id="install-title">Claude Code plugin</h2>
+            <button type="button" class="copy-btn" id="copy-btn" aria-describedby="install-title" hidden>Copy</button>
+          </div>
+          <pre class="cmd-body"><code id="cmd-text"><span class="cmd">claude plugin marketplace add <span class="tok">chartergroup/topopt-demo#v0.1.0</span></span><span class="cmd">claude plugin install <span class="tok">topopt@topopt-demo</span></span></code></pre>
+        </div>
+        <p class="need"><a href="https://github.com/chartergroup/topopt-demo#quick-start-claude-code-plugin">Needs uv.</a></p>
+
+        <nav class="steps" aria-labelledby="steps-label">
+          <p class="label" id="steps-label">Steps for</p>
+          <ul>
+            <li><a href="https://github.com/chartergroup/topopt-demo#quick-start-claude-code-plugin">Claude Code</a></li>
+            <li><a href="https://github.com/chartergroup/topopt-demo#quick-start-claude-desktop-extension-and-plugin-upload">Claude Desktop</a></li>
+            <li><a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#cursor">Cursor</a></li>
+            <li><a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#codex-cli">Codex CLI</a></li>
+            <li><a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#vs-code-agent-mode-github-copilot">VS Code</a></li>
+            <li><a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#gemini-cli">Gemini CLI</a></li>
+          </ul>
+        </nav>
+      </section>
+    </div>
+
+    <figure class="media">
+      <div class="clip">
+        <video id="hero-clip" muted loop playsinline controls preload="metadata"
+               poster="../media/hero-poster.jpg" width="746" height="720"
+               aria-label="A recorded run of the T-shirt wall hook in the dashboard replay: the shape forms in 80 passes, then the finished part turns.">
+          <source src="../media/hero.mp4" type="video/mp4">
+          Your browser cannot play this clip. The still picture shows the finished hook.
+        </video>
+      </div>
+      <figcaption>
+        <span>T-shirt wall hook: <span class="tok">85.6 g &rarr; 26.5 g, 69 % less</span></span>
+        <button type="button" class="clip-btn" id="clip-btn" aria-label="Pause the clip" hidden>Pause</button>
+      </figcaption>
+    </figure>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-row">
+    <a href="https://github.com/chartergroup/topopt-demo/blob/main/LICENSE">MIT license</a>
+    <a href="https://github.com/chartergroup/topopt-demo/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a>
+  </div>
+</footer>
+
+</body>
+</html>
