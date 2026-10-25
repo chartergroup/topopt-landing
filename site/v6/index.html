@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>topopt: make a 3D part lighter and keep it stiff</title>
+<meta name="description" content="topopt is an open-source tool for 3D topology optimization. Give it the loads and the places that must stay. It writes a smooth STL file that you can print.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f6f7f4">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="topbar">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="topopt, top of the page">
+      <svg class="mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false">
+        <rect width="32" height="32" rx="8" fill="currentColor"/>
+        <g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 7v18"/><path d="M9 9.5 23 14.5"/><path d="M9 22.5 23 14.5"/><path d="M23 10.5v4"/>
+        </g>
+      </svg>
+      <span>topopt</span>
+    </a>
+    <nav aria-label="Page sections">
+      <ul>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <a class="bar-link" href="https://github.com/chartergroup/topopt-demo">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="eyebrow">Open-source 3D topology optimization</p>
+      <h1 id="hero-title">Make a 3D part lighter and keep it stiff.</h1>
+      <p class="lead">topopt takes the loads and the places that must stay, and writes a smooth STL file that you can print.</p>
+      <div class="actions">
+        <a class="btn primary" href="#install">Install</a>
+        <a class="btn" href="https://github.com/chartergroup/topopt-demo">GitHub</a>
+      </div>
+      <p class="facts">MIT license &middot; macOS (Apple silicon) and Linux x86_64 &middot; MCP</p>
+      <p class="label" id="clients-label">Install steps for</p>
+      <ul class="clients" aria-labelledby="clients-label">
+        <li><a href="#install-claude-code">Claude Code</a></li>
+        <li><a href="#install-claude-desktop">Claude Desktop</a></li>
+        <li><a href="#install-cursor">Cursor</a></li>
+        <li><a href="#install-codex-cli">Codex CLI</a></li>
+        <li><a href="#install-vs-code">VS Code</a></li>
+        <li><a href="#install-gemini-cli">Gemini CLI</a></li>
+      </ul>
+    </div>
+    <figure class="clip">
+      <div class="clip-frame">
+        <video id="hero-clip" muted loop playsinline controls preload="metadata"
+               poster="../media/hero-poster.jpg" width="746" height="720"
+               aria-label="The T-shirt wall hook in the dashboard: the shape forms in 80 passes, then the finished part turns.">
+          <source src="../media/hero.mp4" type="video/mp4">
+          Your browser cannot play this clip. The still picture shows the finished hook.
+        </video>
+      </div>
+      <figcaption>
+        <span>T-shirt wall hook &middot; 26 s</span>
+        <button type="button" id="clip-toggle" class="small" hidden>Pause clip</button>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="how-it-works" aria-labelledby="how-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">01</p>
+      <h2 id="how-title">How it works</h2>
+    </header>
+    <div class="rail-body">
+      <ol class="steps">
+        <li>
+          <h3>Describe the part</h3>
+          <p>Say it in words, or give a YAML file and one STL file for each region.</p>
+        </li>
+        <li>
+          <h3>Run it and watch</h3>
+          <p>Your agent starts the run with the MCP tool <code>run_topopt</code>, or you type <code>topopt run</code>.</p>
+        </li>
+        <li>
+          <h3>Print the result</h3>
+          <p>The run writes <code>final.stl</code>, a smooth mesh, and <code>metrics.json</code> with the mass and the stiffness.</p>
+        </li>
+      </ol>
+      <p class="label spaced">The hook example, from a clone of the repo</p>
+      <div class="cmd">
+<pre><code>topopt check examples/hook/hook.yaml
+topopt run examples/hook/hook.yaml --out runs/hook --dashboard</code></pre>
+        <button type="button" class="copy small" aria-label="Copy the hook example commands" hidden>Copy</button>
+      </div>
+      <p class="note">The option <code>--dashboard</code> opens the browser. It shows the shape as it forms.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features" aria-labelledby="features-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">02</p>
+      <h2 id="features-title">Features</h2>
+    </header>
+    <div class="rail-body">
+      <dl class="rows">
+        <div><dt>On your computer</dt><dd>Everything runs locally. The dashboard works with no internet.</dd></div>
+        <div><dt>Agent or command line</dt><dd>An MCP server with 27 tools, or the <code>topopt</code> command.</dd></div>
+        <div><dt>Live dashboard</dt><dd>Watch the 3D shape form. Replay a recorded run.</dd></div>
+        <div><dt>More than one load case</dt><dd>The hook example has two: a hanging shirt and a fast pull-off at an angle.</dd></div>
+        <div><dt>A smooth mesh</dt><dd>The final mesh is smooth. The fixed, load and keep-out regions keep their exact shape.</dd></div>
+        <div><dt>Print report</dt><dd>Overhang, plate contact, support estimate, bed fit and the thinnest member, in <code>metrics.json</code>.</dd></div>
+        <div><dt>Your printer</dt><dd>Name the printer. topopt fills in the bed and the type. The catalog has 15 printers.</dd></div>
+        <div><dt>Stress check</dt><dd>An optional extra checks the stress of the finished STL with <code>topopt verify</code>.</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="before-after" aria-labelledby="ba-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">03</p>
+      <h2 id="ba-title">Before and after</h2>
+    </header>
+    <div class="rail-body">
+      <ul class="figures">
+        <li><span class="label">Before</span><span class="value">85.6 g</span></li>
+        <li><span class="label">After</span><span class="value">26.5 g</span></li>
+        <li class="key"><span class="label">Less mass</span><span class="value">69 %</span></li>
+      </ul>
+      <figure class="pic">
+        <img src="../media/before-after-front.png" width="1306" height="565"
+             alt="The T-shirt wall hook before and after the run, side view. Left: the design space in grey, the fixed wall plate in blue and the load region in red. Right: the optimized hook, 69 percent lighter, as two slim struts that join the plate to the hook tip.">
+        <figcaption>Front view, before and after 80 passes.</figcaption>
+      </figure>
+      <figure class="pic">
+        <img src="../media/before-after.png" width="1306" height="565"
+             alt="The same hook before and after the run, seen from the front left and a little above. Left: the design space with the blue plate and the red load region. Right: the optimized hook.">
+        <figcaption>The same run, seen from the front left and a little above.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="install" aria-labelledby="install-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">04</p>
+      <h2 id="install-title">Install</h2>
+    </header>
+    <div class="rail-body">
+      <p class="intro">Start with the Claude Code plugin. The other five clients use the same MCP server from a clone of the repo.</p>
+      <p class="intro">All clients need <code>uv</code>. It gets Python 3.12 by itself.</p>
+      <div class="cmd">
+<pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+        <button type="button" class="copy small" aria-label="Copy the uv command" hidden>Copy</button>
+      </div>
+      <p class="note">On a Mac, <code>brew install uv</code> also works. The fast solver needs the Xcode Command Line Tools: <code>xcode-select --install</code>.</p>
+
+      <article class="client" id="install-claude-code" aria-labelledby="h-claude-code">
+        <header>
+          <h3 id="h-claude-code">Claude Code</h3>
+          <div class="meta">
+            <span class="tag">Recommended</span>
+            <a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md#quick-start-claude-code-plugin">Full steps for Claude Code</a>
+          </div>
+        </header>
+        <p>Add the plugin with two commands. Then type <code>/topopt:start-here</code> in <code>claude</code>. The first start takes 1 to 3 minutes.</p>
+        <div class="cmd">
+<pre><code>claude plugin marketplace add <span class="nb">chartergroup/topopt-demo#v0.1.0</span>
+claude plugin install topopt@topopt-demo</code></pre>
+          <button type="button" class="copy small" aria-label="Copy the Claude Code commands" hidden>Copy</button>
+        </div>
+      </article>
+
+      <article class="client" id="install-claude-desktop" aria-labelledby="h-claude-desktop">
+        <header>
+          <h3 id="h-claude-desktop">Claude Desktop</h3>
+          <div class="meta">
+            <a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md#quick-start-claude-desktop-extension-and-plugin-upload">Full steps for Claude Desktop</a>
+          </div>
+        </header>
+        <p>Build the extension file in a clone. Then open the <code>.mcpb</code> file with Claude Desktop.</p>
+        <div class="cmd">
+<pre><code>git clone https://github.com/<wbr>chartergroup/<wbr>topopt-demo
+cd topopt-demo
+uv run --no-project --python 3.12 packaging/mcpb/build.py</code></pre>
+          <button type="button" class="copy small" aria-label="Copy the Claude Desktop commands" hidden>Copy</button>
+        </div>
+      </article>
+
+      <article class="client" id="install-cursor" aria-labelledby="h-cursor">
+        <header>
+          <h3 id="h-cursor">Cursor</h3>
+          <div class="meta">
+            <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#cursor">Full steps for Cursor</a>
+          </div>
+        </header>
+        <p>The clone has the config file <code>.cursor/mcp.json</code>. Open the folder in Cursor and approve the server.</p>
+        <div class="cmd">
+<pre><code>git clone https://github.com/<wbr>chartergroup/<wbr>topopt-demo</code></pre>
+          <button type="button" class="copy small" aria-label="Copy the Cursor command" hidden>Copy</button>
+        </div>
+      </article>
+
+      <article class="client" id="install-codex-cli" aria-labelledby="h-codex-cli">
+        <header>
+          <h3 id="h-codex-cli">Codex CLI</h3>
+          <div class="meta">
+            <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#codex-cli">Full steps for Codex CLI</a>
+          </div>
+        </header>
+        <p>The clone has the config file <code>.codex/config.toml</code>. Start <code>codex</code> in the repo root and trust the project.</p>
+        <div class="cmd">
+<pre><code>git clone https://github.com/<wbr>chartergroup/<wbr>topopt-demo
+cd topopt-demo
+codex</code></pre>
+          <button type="button" class="copy small" aria-label="Copy the Codex CLI commands" hidden>Copy</button>
+        </div>
+      </article>
+
+      <article class="client" id="install-vs-code" aria-labelledby="h-vs-code">
+        <header>
+          <h3 id="h-vs-code">VS Code</h3>
+          <div class="meta">
+            <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#vs-code-agent-mode-github-copilot">Full steps for VS Code</a>
+          </div>
+        </header>
+        <p>In agent mode. Make this file in the clone as <code>.vscode/mcp.json</code>, then run <code>MCP: List Servers</code> and start <code>topopt</code>.</p>
+        <div class="cmd">
+<pre><code>{
+  "servers": {
+    "topopt": {
+      "type": "stdio",
+      "command": "sh",
+      "args": ["${workspaceFolder}/<wbr>scripts/<wbr>topopt-env.sh", "mcp"],
+      "env": { "TOPOPT_WORKSPACE": "${workspaceFolder}" }
+    }
+  }
+}</code></pre>
+          <button type="button" class="copy small" aria-label="Copy the VS Code config" hidden>Copy</button>
+        </div>
+      </article>
+
+      <article class="client" id="install-gemini-cli" aria-labelledby="h-gemini-cli">
+        <header>
+          <h3 id="h-gemini-cli">Gemini CLI</h3>
+          <div class="meta">
+            <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#gemini-cli">Full steps for Gemini CLI</a>
+          </div>
+        </header>
+        <p>Make this file in the clone as <code>.gemini/settings.json</code>. Start <code>gemini</code> in the repo root.</p>
+        <div class="cmd">
+<pre><code>{
+  "mcpServers": {
+    "topopt": {
+      "command": "sh",
+      "args": ["scripts/<wbr>topopt-env.sh", "mcp"]
+    }
+  }
+}</code></pre>
+          <button type="button" class="copy small" aria-label="Copy the Gemini CLI config" hidden>Copy</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills" aria-labelledby="skills-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">05</p>
+      <h2 id="skills-title">Skills and roles</h2>
+    </header>
+    <div class="rail-body">
+      <h3 class="subhead">Two skills</h3>
+      <dl class="rows">
+        <div><dt><code>start-here</code></dt><dd>Takes you from a part to a printable STL: check, run, dashboard and result.</dd></div>
+        <div><dt><code>part-to-topopt</code></dt><dd>Turns a plain description of a part into a problem YAML and region STL files.</dd></div>
+      </dl>
+      <h3 class="subhead">Four roles</h3>
+      <dl class="rows">
+        <div><dt>Lead design engineer</dt><dd>Finds the goal, the loads, the mounting and the print limits. Reviews the result.</dd></div>
+        <div><dt>CAD engineer</dt><dd>Makes the design space, the fixed regions, the load regions and the keep-outs.</dd></div>
+        <div><dt>FEA engineer</dt><dd>Sets up the loads and the supports, starts the run and reads the numbers.</dd></div>
+        <div><dt>Print engineer</dt><dd>Checks the bed fit, the thin members, the overhangs and the supports.</dd></div>
+      </dl>
+      <p class="note">Claude Code gets the roles as sub-agents. A client without sub-agents gets the role texts from the MCP tool <code>team_guide</code>.</p>
+      <p class="note">Sources:
+        <a class="path" href="https://github.com/chartergroup/topopt-demo/tree/main/skills/start-here">skills/start-here/</a>,
+        <a class="path" href="https://github.com/chartergroup/topopt-demo/tree/main/.claude/skills/part-to-topopt">.claude/skills/part-to-topopt/</a>,
+        <a class="path" href="https://github.com/chartergroup/topopt-demo/tree/main/agents">agents/</a> and
+        <a class="path" href="https://github.com/chartergroup/topopt-demo/tree/main/topopt_mcp/roles">topopt_mcp/roles/</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq" aria-labelledby="faq-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">06</p>
+      <h2 id="faq-title">FAQ</h2>
+    </header>
+    <div class="rail-body">
+      <dl class="faq">
+        <div>
+          <dt>Where does it run?</dt>
+          <dd>On your computer. The first start downloads Python 3.12 and about 200 MB of packages.</dd>
+        </div>
+        <div>
+          <dt>Which computers can I use?</dt>
+          <dd>A Mac with Apple silicon or a Linux x86_64 computer. An Intel Mac is best effort. Windows is not supported.</dd>
+        </div>
+        <div>
+          <dt>Do I need an agent?</dt>
+          <dd>No. The command line works alone: <code>topopt check</code> and <code>topopt run &lt;file.yaml&gt; --out &lt;dir&gt;</code>.</dd>
+        </div>
+        <div>
+          <dt>How long does a run take?</dt>
+          <dd>The hook example takes about 2.5 minutes on an M1 Mac. <code>topopt check</code> gives a time estimate before the run.</dd>
+        </div>
+        <div>
+          <dt>How do I update?</dt>
+          <dd>In a clone, run <code>git pull --ff-only</code>. For the plugin, remove the marketplace, add it with the new release tag and install again. The <a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md#update-to-a-newer-release">README section on updates</a> has the steps.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contributing" aria-labelledby="contributing-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">07</p>
+      <h2 id="contributing-title">Contributing</h2>
+    </header>
+    <div class="rail-body">
+      <p class="intro">The code is in <a href="https://github.com/chartergroup/topopt-demo">chartergroup/topopt-demo</a>. Make a dev environment and run the tests.</p>
+      <div class="cmd">
+<pre><code>uv venv --python 3.12
+uv pip install -e ".[dev,mcp]"
+.venv/bin/python -m pytest -n auto</code></pre>
+        <button type="button" class="copy small" aria-label="Copy the setup commands" hidden>Copy</button>
+      </div>
+      <p class="note">On a Mac with Apple silicon, run <code>sh topopt/native/build.sh</code> first. The <a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md">README</a> has the details. <a href="https://github.com/chartergroup/topopt-demo/blob/main/CHANGELOG.md">CHANGELOG.md</a> lists the changes of each release.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="license" aria-labelledby="license-title">
+  <div class="wrap rail">
+    <header class="rail-head">
+      <p class="label">08</p>
+      <h2 id="license-title">License</h2>
+    </header>
+    <div class="rail-body">
+      <p class="intro">topopt has the MIT License. <a href="https://github.com/chartergroup/topopt-demo/blob/main/LICENSE">LICENSE</a> has the text.</p>
+      <p class="intro">The packages that topopt uses keep their own licenses. Every main dependency has a permissive license, except mmapy (GPL-3.0-or-later). Some optional extras have other terms. <a href="https://github.com/chartergroup/topopt-demo/blob/main/THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a> lists each package.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap foot">
+    <p>topopt &middot; MIT license</p>
+    <ul>
+      <li><a href="https://github.com/chartergroup/topopt-demo">GitHub</a></li>
+      <li><a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md">README</a></li>
+      <li><a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md">Client steps</a></li>
+      <li><a href="https://github.com/chartergroup/topopt-demo/blob/main/CHANGELOG.md">Changelog</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var clip = document.getElementById("hero-clip");
+  var toggle = document.getElementById("clip-toggle");
+  if (clip && toggle && window.matchMedia) {
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var label = function () { toggle.textContent = clip.paused ? "Play clip" : "Pause clip"; };
+    clip.controls = false;
+    toggle.hidden = false;
+    toggle.addEventListener("click", function () {
+      if (clip.paused) { clip.play(); } else { clip.pause(); }
+    });
+    clip.addEventListener("play", label);
+    clip.addEventListener("pause", label);
+    if (!reduced.matches) {
+      var started = clip.play();
+      if (started && started.catch) { started.catch(label); }
+    }
+    label();
+  }
+  var buttons = document.querySelectorAll("button.copy");
+  Array.prototype.forEach.call(buttons, function (button) {
+    var source = button.parentNode.querySelector("pre");
+    if (!source) { return; }
+    button.hidden = false;
+    button.addEventListener("click", function () {
+      var done = function () {
+        button.textContent = "Copied";
+        window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
+      };
+      var fallback = function () {
+        var range = document.createRange();
+        range.selectNodeContents(source);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        try { if (document.execCommand("copy")) { done(); } } catch (error) { return; }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(source.textContent.replace(/\s+$/, "")).then(done, fallback);
+      } else {
+        fallback();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

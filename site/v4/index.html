@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>topopt: make a 3D part lighter and keep it stiff</title>
+<meta name="description" content="topopt is a tool for 3D topology optimization. Give it the loads and the places that must stay. It writes a smooth STL file that you can print.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b0f18">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="topbar">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="topopt, top of the page">
+      <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true" focusable="false"><path d="M9 7v18M9 10l15 6M9 22l15-6M24 12v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>topopt</span>
+    </a>
+    <nav aria-label="Page sections">
+      <ul>
+        <li class="opt"><a href="#how-it-works">How it works</a></li>
+        <li class="opt"><a href="#before-after">Result</a></li>
+        <li><a href="#install">Install</a></li>
+        <li class="opt"><a href="#skills">Skills</a></li>
+        <li><a href="https://github.com/chartergroup/topopt-demo">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="label">3D topology optimization</p>
+      <h1 id="hero-title">Make a 3D part lighter and keep it stiff.</h1>
+      <p class="lead">topopt removes the material that does little work and writes a smooth STL file that you can print.</p>
+      <p class="actions">
+        <a class="btn primary" href="#install">Install</a>
+        <a class="btn" href="https://github.com/chartergroup/topopt-demo">GitHub</a>
+      </p>
+      <p class="facts">MIT license &middot; macOS (Apple silicon) and Linux x86_64 &middot; MCP</p>
+      <div class="clients">
+        <p class="label" id="clients-label">Install steps for</p>
+        <ul aria-labelledby="clients-label">
+          <li><a href="#install-claude-code">Claude Code</a></li>
+          <li><a href="#install-claude-desktop">Claude Desktop</a></li>
+          <li><a href="#install-cursor">Cursor</a></li>
+          <li><a href="#install-codex-cli">Codex CLI</a></li>
+          <li><a href="#install-vs-code">VS Code</a></li>
+          <li><a href="#install-gemini-cli">Gemini CLI</a></li>
+        </ul>
+      </div>
+    </div>
+    <figure class="clip" id="clip">
+      <video id="hero-clip" muted loop playsinline controls preload="metadata"
+             poster="../media/hero-poster.jpg" width="746" height="720"
+             aria-label="A recorded run of the T-shirt wall hook in the dashboard replay: the shape forms in 80 passes, then the finished part turns.">
+        <source src="../media/hero.mp4" type="video/mp4">
+        Your browser cannot play this clip. The still picture shows the finished hook.
+      </video>
+      <span class="play-mark" aria-hidden="true"></span>
+      <figcaption>
+        <span>T-shirt wall hook &middot; 26 s</span>
+        <button type="button" id="clip-toggle" class="textbtn" hidden>Pause clip</button>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" id="how-it-works" aria-labelledby="how-title">
+  <div class="wrap sec-grid">
+    <div class="sec-head">
+      <h2 id="how-title">How it works</h2>
+    </div>
+    <div class="sec-body">
+      <ol class="steps">
+        <li>
+          <span class="num">01</span>
+          <div>
+            <h3>Describe the part</h3>
+            <p>Give one STL file for each region in a YAML file. Or describe the part in words.</p>
+          </div>
+        </li>
+        <li>
+          <span class="num">02</span>
+          <div>
+            <h3>Run it and watch</h3>
+            <p>Your agent starts the run over MCP, or you use <code>topopt run</code>. The dashboard shows the shape form.</p>
+          </div>
+        </li>
+        <li>
+          <span class="num">03</span>
+          <div>
+            <h3>Get a part to print</h3>
+            <p>You get a smooth <code>final.stl</code> and <code>metrics.json</code>: the mass, the stiffness and a print report.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="cmd sh">
+<pre><code><span class="l">topopt check examples/hook/hook.yaml</span>
+<span class="l">topopt run examples/hook/hook.yaml --out runs/hook --dashboard</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="before-after" aria-labelledby="ba-title">
+  <div class="wrap sec-grid">
+    <div class="sec-head">
+      <h2 id="ba-title">Before and after</h2>
+    </div>
+    <div class="sec-body">
+      <div class="readout">
+        <p class="big"><span class="visually-hidden">The part is </span>69 % less<span class="visually-hidden"> in mass</span></p>
+        <dl class="bars">
+          <div class="bar-row">
+            <dt>Before</dt>
+            <dd><span class="track" aria-hidden="true"><span class="fill before"></span></span><span class="val">85.6 g</span></dd>
+          </div>
+          <div class="bar-row">
+            <dt>After</dt>
+            <dd><span class="track" aria-hidden="true"><span class="fill after"></span></span><span class="val">26.5 g</span></dd>
+          </div>
+        </dl>
+      </div>
+      <figure class="sheet">
+        <img src="../media/before-after-front.png" width="1306" height="565"
+             alt="The T-shirt wall hook before and after the run, side view. Left: the design space in grey, the fixed wall plate in blue and the load region in red. Right: the optimized hook, 69 percent lighter, as two slim struts that join the plate to the hook tip.">
+        <figcaption>Front view of <code>examples/hook/</code> &middot; 80 passes</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="install" aria-labelledby="install-title">
+  <div class="wrap sec-grid">
+    <div class="sec-head">
+      <h2 id="install-title">Install</h2>
+    </div>
+    <div class="sec-body">
+
+      <div class="client" id="install-uv">
+        <h3>uv</h3>
+        <div>
+          <div class="cmd sh">
+<pre><code><span class="l">curl -LsSf https://astral.sh/uv/install.sh | sh</span></code></pre>
+          </div>
+          <p class="note">The only prerequisite. It gets Python 3.12 by itself. On a Mac, <code>brew install uv</code> also works.</p>
+        </div>
+      </div>
+
+      <div class="client" id="install-claude-code">
+        <h3>Claude Code <span class="tag">recommended</span></h3>
+        <div>
+          <div class="cmd sh">
+<pre><code><span class="l">claude plugin marketplace add chartergroup/topopt-demo#v0.1.0</span>
+<span class="l">claude plugin install topopt@topopt-demo</span></code></pre>
+          </div>
+          <p class="note">Then type <code>/topopt:start-here</code> in <code>claude</code>. <a href="https://github.com/chartergroup/topopt-demo#quick-start-claude-code-plugin">Full steps<span class="visually-hidden"> for Claude Code</span></a></p>
+        </div>
+      </div>
+
+      <div class="client" id="install-claude-desktop">
+        <h3>Claude Desktop</h3>
+        <div>
+          <div class="cmd sh">
+<pre><code><span class="l">git clone https://github.com/chartergroup/topopt-demo</span>
+<span class="l">cd topopt-demo</span>
+<span class="l">uv run --no-project --python 3.12 packaging/mcpb/build.py</span></code></pre>
+          </div>
+          <p class="note">Open the <code>.mcpb</code> file in <code>dist/mcpb/</code> with Claude Desktop. <a href="https://github.com/chartergroup/topopt-demo#quick-start-claude-desktop-extension-and-plugin-upload">Full steps<span class="visually-hidden"> for Claude Desktop</span></a></p>
+        </div>
+      </div>
+
+      <div class="client" id="install-cursor">
+        <h3>Cursor</h3>
+        <div>
+          <div class="cmd sh">
+<pre><code><span class="l">git clone https://github.com/chartergroup/topopt-demo</span></code></pre>
+          </div>
+          <p class="note">Open the folder in Cursor. The file <code>.cursor/mcp.json</code> is in the repo. <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#cursor">Full steps<span class="visually-hidden"> for Cursor</span></a></p>
+        </div>
+      </div>
+
+      <div class="client" id="install-codex-cli">
+        <h3>Codex CLI</h3>
+        <div>
+          <div class="cmd sh">
+<pre><code><span class="l">git clone https://github.com/chartergroup/topopt-demo</span>
+<span class="l">cd topopt-demo &amp;&amp; codex</span></code></pre>
+          </div>
+          <p class="note">Trust the project. The file <code>.codex/config.toml</code> is in the repo. <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#codex-cli">Full steps<span class="visually-hidden"> for Codex CLI</span></a></p>
+        </div>
+      </div>
+
+      <div class="client" id="install-vs-code">
+        <h3>VS Code</h3>
+        <div>
+          <div class="cmd">
+<pre><code>{ "servers": { "topopt": {
+  "type": "stdio", "command": "sh",
+  "args": ["${workspaceFolder}/scripts/topopt-env.sh", "mcp"],
+  "env": { "TOPOPT_WORKSPACE": "${workspaceFolder}" }
+} } }</code></pre>
+          </div>
+          <p class="note">Save it as <code>.vscode/mcp.json</code> in a clone of the repo. <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#vs-code-agent-mode-github-copilot">Full steps<span class="visually-hidden"> for VS Code</span></a></p>
+        </div>
+      </div>
+
+      <div class="client" id="install-gemini-cli">
+        <h3>Gemini CLI</h3>
+        <div>
+          <div class="cmd">
+<pre><code>{ "mcpServers": { "topopt": {
+  "command": "sh", "args": ["scripts/topopt-env.sh", "mcp"]
+} } }</code></pre>
+          </div>
+          <p class="note">Save it as <code>.gemini/settings.json</code> in a clone of the repo. Start <code>gemini</code> there. <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md#gemini-cli">Full steps<span class="visually-hidden"> for Gemini CLI</span></a></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="skills" aria-labelledby="skills-title">
+  <div class="wrap sec-grid">
+    <div class="sec-head">
+      <h2 id="skills-title">Skills and roles</h2>
+    </div>
+    <div class="sec-body">
+      <h3 class="label">Skills</h3>
+      <dl class="rows">
+        <div>
+          <dt><a href="https://github.com/chartergroup/topopt-demo/tree/main/skills/start-here">start-here</a></dt>
+          <dd>Checks the machine, then takes you from a part to a printable STL.</dd>
+        </div>
+        <div>
+          <dt><a href="https://github.com/chartergroup/topopt-demo/tree/main/.claude/skills/part-to-topopt">part-to-topopt</a></dt>
+          <dd>Turns a plain description of a part into a problem YAML and region STL files.</dd>
+        </div>
+      </dl>
+      <h3 class="label">Four roles</h3>
+      <dl class="rows">
+        <div>
+          <dt>Lead design engineer</dt>
+          <dd>Sets the goal, the loads and the print limits. Reviews the result.</dd>
+        </div>
+        <div>
+          <dt>CAD engineer</dt>
+          <dd>Builds the design space, the fixed and load regions, and the keep-outs.</dd>
+        </div>
+        <div>
+          <dt>FEA engineer</dt>
+          <dd>Sets up the loads, starts the run and reads compliance and stiffness.</dd>
+        </div>
+        <div>
+          <dt>Print engineer</dt>
+          <dd>Checks the fit on the bed, thin members, overhangs and supports.</dd>
+        </div>
+      </dl>
+      <p class="note">The role texts are in <a href="https://github.com/chartergroup/topopt-demo/tree/main/agents">agents/</a> and <a href="https://github.com/chartergroup/topopt-demo/tree/main/topopt_mcp/roles">topopt_mcp/roles/</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec slim" id="contributing" aria-labelledby="contributing-title">
+  <div class="wrap sec-grid">
+    <div class="sec-head">
+      <h2 id="contributing-title">Contributing</h2>
+    </div>
+    <div class="sec-body">
+      <p>The code is in <a href="https://github.com/chartergroup/topopt-demo">chartergroup/topopt-demo</a>. The README has a section on the tests. <a href="https://github.com/chartergroup/topopt-demo/blob/main/CHANGELOG.md">CHANGELOG.md</a> lists the changes of each release.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec slim" id="license" aria-labelledby="license-title">
+  <div class="wrap sec-grid">
+    <div class="sec-head">
+      <h2 id="license-title">License</h2>
+    </div>
+    <div class="sec-body">
+      <p>MIT. The text is in <a href="https://github.com/chartergroup/topopt-demo/blob/main/LICENSE">LICENSE</a>. Each package that topopt uses keeps its own license: <a href="https://github.com/chartergroup/topopt-demo/blob/main/THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a> lists them.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <p>topopt &middot; MIT license</p>
+    <p><a href="https://github.com/chartergroup/topopt-demo">GitHub</a></p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
