@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>topopt: make a 3D part lighter and keep it stiff</title>
+<meta name="description" content="topopt is a tool for 3D topology optimization. Give it the loads and the places that must stay. It writes a smooth STL file that you can print. Research preview.">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#overview">Skip to the content</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">topopt</a>
+    <nav aria-label="Page sections">
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contributing">Contributing</a></li>
+      </ul>
+    </nav>
+    <div class="meta">
+      <span><span class="version">v0.1.0</span>, research preview</span>
+      <a href="https://github.com/chartergroup/topopt-demo">GitHub: topopt-demo</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">3D topology optimization</span>
+      <h1 id="hero-title">Make a 3D part lighter and keep it stiff.</h1>
+      <p class="lead">Give topopt the loads and the places that must stay. It writes a smooth STL file that you can print.</p>
+      <p class="muted">A live dashboard in the browser shows the run. An agent client, such as Claude Code, can drive topopt through an MCP server.</p>
+      <div class="cta">
+        <a class="btn" href="#install">Install</a>
+        <a class="btn ghost" href="#before-after">See the result</a>
+      </div>
+      <p class="clients-label" id="clients-label">Install steps for six agent clients. Each link goes to the steps and the status of that client:</p>
+      <ul class="clients" aria-labelledby="clients-label">
+        <li><a href="#install-claude-code">Claude Code</a></li>
+        <li><a href="#install-claude-desktop">Claude Desktop</a></li>
+        <li><a href="#install-cursor">Cursor</a></li>
+        <li><a href="#install-codex-cli">Codex CLI</a></li>
+        <li><a href="#install-vs-code">VS Code</a></li>
+        <li><a href="#install-gemini-cli">Gemini CLI</a></li>
+      </ul>
+    </div>
+    <figure class="clip">
+      <div class="clip-frame">
+        <video id="hero-clip" muted loop playsinline controls preload="metadata"
+               poster="media/hero-poster.jpg" width="746" height="720"
+               aria-label="A recorded run of the T-shirt wall hook in the dashboard replay: the shape forms in 80 passes, then the finished part turns.">
+          <source src="media/hero.mp4" type="video/mp4">
+          Your browser cannot play this clip. The still picture shows the finished hook.
+        </video>
+      </div>
+      <button type="button" id="clip-toggle" class="clip-toggle" hidden>Pause clip</button>
+      <figcaption>The T-shirt wall hook: a recorded run (80 passes, 147 s) in the dashboard replay. The clip is 15 s long. It has no sound. It shows all 80 passes, then one turn of the finished part.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="overview" aria-labelledby="overview-title">
+  <div class="wrap">
+    <h2 id="overview-title">Overview</h2>
+    <p class="intro">topopt is a tool for 3D topology optimization. You give it the space that the part can fill, the places that stay fixed, and the loads. It removes the material that does little work. It writes a smooth STL file that you can print.</p>
+    <ul class="facts">
+      <li><strong>Runs on your computer</strong>Everything runs on your computer. The dashboard works with no internet. The first start downloads Python 3.12 and about 200 MB of packages.</li>
+      <li><strong>macOS and Linux</strong>macOS on Apple silicon (the target) and Linux x86_64. Python 3.12. An Intel Mac is best effort. Windows is not supported. The hook example needs at least 16 GB of memory.</li>
+      <li><strong>Agent or command line</strong>An MCP server with 27 tools, which an agent client starts. Or the command line: <code>topopt check</code> and <code>topopt run &lt;file.yaml&gt; --out &lt;dir&gt;</code>.</li>
+      <li><strong>Live dashboard</strong>It shows the 3D shape while it forms, the log, and a bar with the pass, the time, the volume and the compliance. It also replays a recorded run.</li>
+      <li><strong>Checks after the run</strong>A print report in <code>metrics.json</code> and the command <code>topopt printcheck</code>. With an optional extra, a stress check of the finished STL (<code>topopt verify</code>).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="how-it-works" aria-labelledby="how-title">
+  <div class="wrap">
+    <h2 id="how-title">How it works, in 3 steps</h2>
+    <ol class="steps">
+      <li>
+        <h3>Describe the problem</h3>
+        <p>A YAML file names one STL file for each region: the design space, the fixed regions, the load regions (each with a force vector) and, if you want, keep-out regions. It also sets the material, the volume fraction, the voxel size and the number of passes.</p>
+        <p>Or describe the part in words. The skill <code>part-to-topopt</code> writes the YAML and the region files.</p>
+      </li>
+      <li>
+        <h3>Run it and watch</h3>
+        <p><code>topopt run</code> starts the run. With <code class="nb">--dashboard</code>, the browser shows the 3D shape while it forms. In an agent client, Claude starts the run with the MCP tool <code>run_topopt</code>.</p>
+        <p>The hook example takes about 2.5 minutes on an M1 Mac (148 s).</p>
+      </li>
+      <li>
+        <h3>Get a part that you can print</h3>
+        <p>The result folder holds <code>final.stl</code> (a smooth mesh) and <code>metrics.json</code>. The metrics give the mass, the stiffness of each load case and a print report: overhang, plate contact, support estimate, bed fit and the thinnest member.</p>
+      </li>
+    </ol>
+    <figure class="figure">
+<pre><code># Excerpt of examples/hook/hook.yaml (some keys left out)
+regions:
+  design: design.stl
+  fixed:
+    - wall_plate.stl
+  load:
+    tip: hook_tip.stl
+
+load_cases:
+  - name: hang
+    forces:
+      - region: tip
+        force: [0.0, 0.0, -1.96]     # N
+
+settings:
+  voxel_size: 1.2                    # mm
+  volume_fraction: 0.2
+  iterations: 80</code></pre>
+      <figcaption>The input of the hook example: STL files for the regions, a force on the load region, and the settings. The full file also has a second load case, a fast pull-off at an angle.</figcaption>
+    </figure>
+    <p class="small muted">The commands of the three steps:</p>
+<pre><code>topopt check examples/hook/hook.yaml
+topopt run examples/hook/hook.yaml --out runs/hook --dashboard
+# the result: runs/hook/result/final.stl and metrics.json</code></pre>
+  </div>
+</section>
+
+<section id="before-after" aria-labelledby="ba-title">
+  <div class="wrap">
+    <h2 id="ba-title">Before and after</h2>
+    <p class="intro">The example is <code>examples/hook/</code>. The left picture is the design space before the run. The plate on the wall is fixed (blue). The hook tip is where the load acts (red). The right picture is the result after 80 passes, in the same view and at the same scale.</p>
+    <ul class="numbers">
+      <li><span class="big">85.6 g &rarr; 26.5 g</span></li>
+      <li><span class="big good">69 % less</span></li>
+    </ul>
+    <figure class="figure">
+      <img src="media/before-after-front.png" width="1306" height="565"
+           alt="The T-shirt wall hook before and after the run, side view. Left: the design space in grey, the fixed wall plate in blue and the load region in red. Right: the optimized hook, 69 percent lighter, as two slim struts that join the plate to the hook tip.">
+      <figcaption>Front view. Before: design space (grey), fixed (blue), load (red). After: 80 passes, 26.5 g.</figcaption>
+    </figure>
+    <figure class="figure">
+      <img src="media/before-after.png" width="1306" height="565"
+           alt="The same hook before and after the run, seen from the front left and a little above. Left: the design space with the blue plate and the red load region. Right: the optimized hook.">
+      <figcaption>The same run, seen from the front left and a little above.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="install" aria-labelledby="install-title">
+  <div class="wrap">
+    <h2 id="install-title">Install</h2>
+    <div class="notice" role="note">
+      <p><strong>The code repo is private for now.</strong> The install needs access to <a href="https://github.com/chartergroup/topopt-demo">chartergroup/topopt-demo</a>. The links to that repo on this page work only for people with access.</p>
+      <p>Git on your computer needs a login that works for the repo. For example, an SSH key that needs no passphrase prompt, or a credential that git already has (from <code>gh auth login</code> or the macOS Keychain).</p>
+    </div>
+    <p class="intro">The recommended route is the Claude Code plugin. The other five clients use the same MCP server. Each block has the short steps, the way to update, the way to reinstall, and the status of that client. The full steps are in the <a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md">README</a> and in <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md">docs/clients.md</a>.</p>
+    <p class="intro">All clients need <code>uv</code>. It is the only prerequisite. It gets Python 3.12 by itself. Install it with <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code>, or with <code>brew install uv</code> on a Mac. On a Mac, the fast solver needs <code>clang</code> from the Xcode Command Line Tools (<code class="nb">xcode-select --install</code>). Without it, topopt uses the slower AMG solver.</p>
+
+    <article class="client recommended" id="install-claude-code" data-client="Claude Code" aria-labelledby="h-claude-code">
+      <header>
+        <h3 id="h-claude-code">Claude Code (plugin)</h3>
+        <span class="tag">Recommended</span>
+        <span class="badge gaps" data-role="status">ready with gaps</span>
+      </header>
+      <p><strong>Status.</strong> A person ran the launcher on Linux. The install from GitHub is not tested by a person yet.</p>
+      <ol>
+        <li>Install <code>uv</code> (see above).</li>
+        <li>Add the marketplace and install the plugin. Run these two commands in a terminal.
+<pre><code>claude plugin marketplace add chartergroup/topopt-demo#v0.1.0
+claude plugin install topopt@topopt-demo</code></pre>
+          The part <code>#v0.1.0</code> pins the install to the release <code>v0.1.0</code>.</li>
+        <li>Start <code>claude</code> in a work folder and type <code>/topopt:start-here</code>. Claude checks the machine, helps you describe the part, checks the problem, starts the run, and gives you the dashboard link.</li>
+        <li>Open the dashboard link (usually <code>http://127.0.0.1:8765/</code>) in a browser to see the shape form.</li>
+      </ol>
+      <p><strong>First start: 1 to 3 minutes.</strong> The plugin makes its own Python environment. Claude Code waits only 30 s for an MCP server, so <code>topopt</code> shows <code>failed</code> at first. The setup goes on in the background. When it is done, type <code>/mcp</code> and reconnect <code>topopt</code>.</p>
+      <details>
+        <summary>Update and reinstall</summary>
+        <p><strong>Update.</strong> The install names a release tag, so it stays on that release. <code>claude plugin update topopt@topopt-demo</code> alone does not move a pinned install to a new tag. Remove the marketplace, add it with the new tag, and install again. Write the new tag in place of <code>&lt;new-tag&gt;</code>.</p>
+<pre><code>claude plugin marketplace remove topopt-demo
+claude plugin marketplace add chartergroup/topopt-demo#&lt;new-tag&gt;
+claude plugin install topopt@topopt-demo</code></pre>
+        <p><strong>Reinstall.</strong> Run the same three commands with the tag that you have now. <code>marketplace remove</code> also uninstalls the plugin and deletes the plugin data folder. That folder holds the Python environment, so the next start sets up Python again (1 to 3 minutes). A second route keeps the environment. The README has it, in the section <a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md#update-to-a-newer-release">Update to a newer release</a>.</p>
+      </details>
+    </article>
+
+    <article class="client" id="install-claude-desktop" data-client="Claude Desktop" aria-labelledby="h-claude-desktop">
+      <header>
+        <h3 id="h-claude-desktop">Claude Desktop (extension and plugin upload)</h3>
+        <span class="badge notready" data-role="status">not ready</span>
+      </header>
+      <p><strong>Status.</strong> Not tested by a person yet. The extension is not a download yet: you build the file from a checkout. The target is a Mac with Apple silicon. The app needs a sign-in to claude.ai. An organization can turn extensions off.</p>
+      <ol>
+        <li>Install <code>uv</code> (<code>brew install uv</code>). The extension starts the server with <code>uv run</code>.</li>
+        <li>Clone the repo and build the extension file in the checkout.
+<pre><code>git clone https://github.com/chartergroup/topopt-demo
+cd topopt-demo
+uv run --no-project --python 3.12 packaging/mcpb/build.py</code></pre>
+          It writes <code>dist/mcpb/topopt-&lt;version&gt;.mcpb</code> (about 1.8 MB).</li>
+        <li>Open the <code>.mcpb</code> file with Claude Desktop, or go to Settings, Extensions and drag the file in. The optional field Work folder is where runs go (empty means <code>~/Documents/topopt</code>).</li>
+        <li>First start: 1 to 3 minutes while <code>uv</code> downloads Python and the packages. If the extension shows an error at first, wait for the download. Then turn the extension off and on.</li>
+        <li>Optional, on a Mac: build the fast solver library. Ask Claude to call <code>environment</code>. It gives the command.</li>
+        <li>Optional: upload the plugin zip under Customize, Plugins. It adds the skills <code>start-here</code> and <code>part-to-topopt</code>. The README has the command that makes the zip.</li>
+        <li>Test: ask Claude for the tools of topopt. Then ask it to call <code>team_guide</code> with no role.</li>
+      </ol>
+      <details>
+        <summary>Update and reinstall</summary>
+        <p>The README has no update or reinstall steps for the extension yet. It says that a Claude Desktop update of the extension replaces the extension folder and removes the solver library on a Mac. Run the build command for the library again then. A change of the Work folder needs a full quit of Claude (Cmd+Q on a Mac).</p>
+        <p>The full steps are in the README, section <a href="https://github.com/chartergroup/topopt-demo/blob/main/README.md#quick-start-claude-desktop-extension-and-plugin-upload">Quick start: Claude Desktop</a>.</p>
+      </details>
+    </article>
+
+    <article class="client" id="install-cursor" data-client="Cursor" aria-labelledby="h-cursor">
+      <header>
+        <h3 id="h-cursor">Cursor</h3>
+        <span class="badge gaps" data-role="status">ready with gaps</span>
+      </header>
+      <p><strong>Status.</strong> Not tested by a person yet. A test starts the server with the launch of the config file. It does not show how Cursor behaves.</p>
+      <ol>
+        <li>Install <code>uv</code> (see above).</li>
+        <li>Clone the repo: <code>git clone https://github.com/chartergroup/topopt-demo</code>. The file <code>.cursor/mcp.json</code> is in it.</li>
+        <li>Optional (the docs advise it): run <code>sh scripts/topopt-env.sh sync</code> in the clone. It makes the Python environment and waits until it is ready. A cold first start takes 1 minute or more, and a client can stop waiting before it ends.</li>
+        <li>Open the folder in Cursor. Approve the project server if Cursor asks. Under Customize, MCPs, <code>topopt</code> shows with its tools.</li>
+      </ol>
+      <details>
+        <summary>Update and reinstall</summary>
+        <p><strong>Update.</strong> Run <code>git pull --ff-only</code> in the clone. The environment follows the lock file by itself: the next start installs again when the lock file changed. <code>sh scripts/topopt-env.sh sync</code> does the same in a terminal.</p>
+        <p><strong>Reinstall.</strong> The environment is in the folder <code>.plugin-env/</code> of the clone. A setup that was cut is repaired by the next start. <code>sh scripts/topopt-env.sh doctor</code> shows the state and changes nothing. The docs have no separate reinstall command for this route yet.</p>
+      </details>
+    </article>
+
+    <article class="client" id="install-codex-cli" data-client="Codex CLI" aria-labelledby="h-codex-cli">
+      <header>
+        <h3 id="h-codex-cli">Codex CLI</h3>
+        <span class="badge gaps" data-role="status">ready with gaps</span>
+      </header>
+      <p><strong>Status.</strong> Not tested by a person yet. A test starts the server with the launch of the config file. It does not show how Codex behaves.</p>
+      <ol>
+        <li>Install <code>uv</code> (see above).</li>
+        <li>Clone the repo: <code>git clone https://github.com/chartergroup/topopt-demo</code>. The file <code>.codex/config.toml</code> is in it.</li>
+        <li>Start <code>codex</code> in the repo root. The relative path in the config needs this. Trust the project when Codex asks. Without trust, Codex ignores the config file.</li>
+        <li>Type <code>/mcp</code>, or run <code>codex mcp list</code>. <code>topopt</code> shows in the list. After a cold start, the first turn can miss the tools. Ask again, or start Codex again.</li>
+      </ol>
+      <details>
+        <summary>Update and reinstall</summary>
+        <p><strong>Update.</strong> Run <code>git pull --ff-only</code> in the clone. The environment follows the lock file by itself. <code>sh scripts/topopt-env.sh sync</code> does the same in a terminal.</p>
+        <p><strong>Reinstall.</strong> The environment is in the folder <code>.plugin-env/</code> of the clone. A setup that was cut is repaired by the next start. <code>sh scripts/topopt-env.sh doctor</code> shows the state and changes nothing. The docs have no separate reinstall command for this route yet.</p>
+      </details>
+    </article>
+
+    <article class="client" id="install-vs-code" data-client="VS Code" aria-labelledby="h-vs-code">
+      <header>
+        <h3 id="h-vs-code">VS Code (agent mode)</h3>
+        <span class="badge gaps" data-role="status">ready with gaps</span>
+      </header>
+      <p><strong>Status.</strong> Not tested by a person yet. The config file is not in the repo: you make it from a snippet.</p>
+      <ol>
+        <li>Install <code>uv</code> (see above).</li>
+        <li>Clone the repo, open the folder in VS Code, and trust the workspace.</li>
+        <li>Make the file <code>.vscode/mcp.json</code>:
+<pre><code>{
+  "servers": {
+    "topopt": {
+      "type": "stdio",
+      "command": "sh",
+      "args": ["${workspaceFolder}/scripts/topopt-env.sh", "mcp"],
+      "env": { "TOPOPT_WORKSPACE": "${workspaceFolder}" }
+    }
+  }
+}</code></pre></li>
+        <li>Run <code>MCP: List Servers</code> from the Command Palette. Select <code>topopt</code> and start the server.</li>
+        <li>Open chat in agent mode and ask for the topopt tools.</li>
+      </ol>
+      <details>
+        <summary>Update and reinstall</summary>
+        <p><strong>Update.</strong> Run <code>git pull --ff-only</code> in the clone. The environment follows the lock file by itself. <code>sh scripts/topopt-env.sh sync</code> does the same in a terminal.</p>
+        <p><strong>Reinstall.</strong> The environment is in the folder <code>.plugin-env/</code> of the clone. A setup that was cut is repaired by the next start. <code>MCP: List Servers</code> has Restart Server for the server. The docs have no separate reinstall command for this route yet.</p>
+        <p>The repo also has a root <code>.mcp.json</code> that VS Code reads. With your snippet, VS Code can show two servers named <code>topopt</code>. The page <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/clients.md">docs/clients.md</a> tells the options.</p>
+      </details>
+    </article>
+
+    <article class="client" id="install-gemini-cli" data-client="Gemini CLI" aria-labelledby="h-gemini-cli">
+      <header>
+        <h3 id="h-gemini-cli">Gemini CLI</h3>
+        <span class="badge gaps" data-role="status">ready with gaps</span>
+      </header>
+      <p><strong>Status.</strong> Not tested by a person yet. The config file is not in the repo: you make it from a snippet.</p>
+      <ol>
+        <li>Install <code>uv</code> (see above).</li>
+        <li>Clone the repo and go in.</li>
+        <li>Make the file <code>.gemini/settings.json</code>:
+<pre><code>{
+  "mcpServers": {
+    "topopt": { "command": "sh", "args": ["scripts/topopt-env.sh", "mcp"] }
+  }
+}</code></pre></li>
+        <li>Start <code>gemini</code> in the repo root. The relative path in the snippet needs this. Trust the folder if Gemini asks.</li>
+        <li>Type <code>/mcp</code>. <code>topopt</code> shows with the status connected and its tools.</li>
+      </ol>
+      <details>
+        <summary>Update and reinstall</summary>
+        <p><strong>Update.</strong> Run <code>git pull --ff-only</code> in the clone. The environment follows the lock file by itself. <code>sh scripts/topopt-env.sh sync</code> does the same in a terminal.</p>
+        <p><strong>Reinstall.</strong> The environment is in the folder <code>.plugin-env/</code> of the clone. A setup that was cut is repaired by the next start. <code>sh scripts/topopt-env.sh doctor</code> shows the state and changes nothing. The docs have no separate reinstall command for this route yet.</p>
+      </details>
+    </article>
+
+    <h3>What the status words mean</h3>
+    <ul class="legend">
+      <li><strong>ready</strong>: a person ran the steps in the client and they worked.</li>
+      <li><strong>ready with gaps</strong>: no failing step is known, but nobody ran the steps in the client, or a known gap remains.</li>
+      <li><strong>not ready</strong>: a step cannot be done as written, or a core fact is not known.</li>
+    </ul>
+    <p class="small muted">The status comes from the <a href="https://github.com/chartergroup/topopt-demo/blob/main/docs/install-test-checklist.md#readiness-at-a-glance">install test checklist</a> of the repo. The same page has the steps for a person who wants to test an install and send the result back.</p>
+  </div>
+</section>
+
+<section id="skills" aria-labelledby="skills-title">
+  <div class="wrap">
+    <h2 id="skills-title">Skills and roles</h2>
+    <p class="intro">The repo has two skills and four roles. The skills are in the Claude Code plugin. Codex CLI, Gemini CLI, Cursor and VS Code read copies of them from <code>.agents/skills/</code>. A client without sub-agents gets the four role texts from the MCP tool <code>team_guide</code>. The same texts are MCP prompts.</p>
+    <div class="cards">
+      <div class="card">
+        <h3><code>start-here</code></h3>
+        <p>Checks that the topopt server and the machine are ready. Then it takes you from a part (in words, or as STL and YAML files) to a printable STL: check, run, dashboard and result. In Claude Code, type <code>/topopt:start-here</code>.</p>
+        <p class="small muted">Source: <a href="https://github.com/chartergroup/topopt-demo/tree/main/skills/start-here">skills/start-here/</a></p>
+      </div>
+      <div class="card">
+        <h3><code>part-to-topopt</code></h3>
+        <p>Turns a plain description of a part (for example a wall hook for a T-shirt, or a bracket for a shelf) into a valid problem YAML and region STL files. It checks them and prints the assumptions. For a part that already has STL files, it is not the skill to use.</p>
+        <p class="small muted">Source: <a href="https://github.com/chartergroup/topopt-demo/tree/main/.claude/skills/part-to-topopt">.claude/skills/part-to-topopt/</a></p>
+      </div>
+    </div>
+    <h3 class="subhead">The four roles</h3>
+    <div class="cards">
+      <div class="card">
+        <h3>Lead design engineer</h3>
+        <p>Finds out the goal, the loads, the mounting, the material, the size and the print limits. States the assumptions. Reviews the final result.</p>
+      </div>
+      <div class="card">
+        <h3>CAD engineer</h3>
+        <p>Turns the brief into the design space, the fixed regions, the load regions and the keep-outs. Looks at the result at the end: shape, fit and details.</p>
+      </div>
+      <div class="card">
+        <h3>FEA engineer</h3>
+        <p>Sets up the loads and the supports in the problem YAML, checks the setup, starts the run, and reads the numbers: compliance, stiffness, lost force, time and memory.</p>
+      </div>
+      <div class="card">
+        <h3>Print engineer</h3>
+        <p>Checks if the result can be printed: fit on the bed, thin members, holes, overhangs, orientation and supports. Gives findings with places and suggestions.</p>
+      </div>
+    </div>
+    <p class="small muted">Source: the files in <a href="https://github.com/chartergroup/topopt-demo/tree/main/agents">agents/</a> (the role sub-agents of the plugin) and <a href="https://github.com/chartergroup/topopt-demo/tree/main/topopt_mcp/roles">topopt_mcp/roles/</a> (the MCP prompts).</p>
+  </div>
+</section>
+
+<section id="contributing" aria-labelledby="contributing-title">
+  <div class="wrap">
+    <h2 id="contributing-title">Contributing</h2>
+    <p class="intro">The code is in the repo <a href="https://github.com/chartergroup/topopt-demo">chartergroup/topopt-demo</a>. The repo is private for now, so only people with access can read it. It has no contributor guide yet. If you have access, the README has a section on the tests, and <code>CHANGELOG.md</code> lists the changes of each release.</p>
+  </div>
+</section>
+
+<section id="license" aria-labelledby="license-title">
+  <div class="wrap">
+    <h2 id="license-title">License</h2>
+    <p class="intro">topopt has the MIT License. The file <a href="https://github.com/chartergroup/topopt-demo/blob/main/LICENSE">LICENSE</a> has the text. The packages that topopt uses have their own licenses. Every main dependency has a permissive license, except mmapy (GPL-3.0-or-later). Some optional extras have GPL or other terms. <a href="https://github.com/chartergroup/topopt-demo/blob/main/THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a> lists the license of each package and how it was checked. It gives facts. It does not give legal advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>topopt, research preview. 2026.</p>
+    <p><a href="https://github.com/chartergroup/topopt-demo">GitHub: chartergroup/topopt-demo</a> (private for now)</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var clip = document.getElementById("hero-clip");
+  var button = document.getElementById("clip-toggle");
+  if (!clip || !button || !window.matchMedia) { return; }
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function label() { button.textContent = clip.paused ? "Play clip" : "Pause clip"; }
+  clip.controls = false;
+  button.hidden = false;
+  button.addEventListener("click", function () {
+    if (clip.paused) { clip.play(); } else { clip.pause(); }
+  });
+  clip.addEventListener("play", label);
+  clip.addEventListener("pause", label);
+  if (!reduced.matches) {
+    var started = clip.play();
+    if (started && started.catch) { started.catch(label); }
+  }
+  label();
+})();
+</script>
+</body>
+</html>

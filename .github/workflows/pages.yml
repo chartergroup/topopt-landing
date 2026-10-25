@@ -1,0 +1,48 @@
+# Publish the landing page (the folder site/) to GitHub Pages.
+# The only event is a start by hand. The runner budget is small, so no push or
+# pull request starts this workflow (the same rule as the workflows of topopt-demo).
+name: pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. A deployment that runs is not cancelled.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@v6
+
+      - name: Check the site
+        run: python3 scripts/check_site.py site
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload the artifact (only the folder site/)
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
