@@ -31,7 +31,7 @@ The check requires exactly one HTML page. It verifies local files and anchors, s
 
 ## Social preview
 
-`site/assets/social-preview.jpg` is the 1200 × 630 sharing image. Open Graph and large-image card metadata in `site/index.html` point to its absolute published URL.
+`site/assets/social-preview-optimized.jpg` is the 1200 × 630 sharing image. Open Graph and large-image card metadata in `site/index.html` point to its absolute published URL.
 
 The artwork source is `scripts/social-preview.html`. To regenerate it, temporarily copy it to `site/social-preview-artwork.html`, serve the site, and capture a 1200 × 630 browser screenshot after the Manrope font and model image finish loading. Save the screenshot as JPEG to the asset path and remove the temporary page before running the site check. Keep the published site to one HTML page.
 
