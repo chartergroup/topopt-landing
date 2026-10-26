@@ -1,6 +1,6 @@
 # topopt-landing
 
-This repository contains the single-page website for topopt. The product code is in [chartergroup/topopt-demo](https://github.com/chartergroup/topopt-demo).
+This repository contains the single-page website for topopt. The product code is in [chartergroup/topopt](https://github.com/chartergroup/topopt).
 
 ## Layout
 
