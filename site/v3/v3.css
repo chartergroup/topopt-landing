@@ -53,7 +53,7 @@ summary{font-size:16px}
 /* Icons: the SVG files in icons/ are masks, so the colour follows the text. */
 .ico{display:inline-block;flex:none;width:1.05em;height:1.05em;background:currentColor;vertical-align:-.16em;
   -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
-.ico-apple{-webkit-mask-image:url(icons/apple.svg);mask-image:url(icons/apple.svg)}
+.ico-cpu{-webkit-mask-image:url(icons/cpu.svg);mask-image:url(icons/cpu.svg)}
 .ico-linux{-webkit-mask-image:url(icons/linux.svg);mask-image:url(icons/linux.svg)}
 .ico-claude{-webkit-mask-image:url(icons/claude.svg);mask-image:url(icons/claude.svg)}
 .ico-claudecode{-webkit-mask-image:url(icons/claudecode.svg);mask-image:url(icons/claudecode.svg)}

@@ -44,6 +44,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## Tabler Icons: MIT licence
+
+- Set: Tabler Icons, folder `icons/outline/`.
+- Project: https://github.com/tabler/tabler-icons
+- Pinned commit: `ab7315d660c76f97d4b9ae9b2ff2aacba1d61730`
+- Licence file: https://raw.githubusercontent.com/tabler/tabler-icons/ab7315d660c76f97d4b9ae9b2ff2aacba1d61730/LICENSE
+- Generic icons: a processor next to Apple silicon and a code sign next to VS Code. The Apple logo is not used: Apple's guidelines for third parties allow the word Apple in a compatibility phrase, but not the Apple Logo. The VS Code icon is not used: Microsoft's brand page allows it only in content about VS Code or in a link to code.visualstudio.com. The files are byte-identical to the source files.
+
+| File | Source URL | SHA-256 (start) | Used for |
+|---|---|---|---|
+| `cpu.svg` | https://raw.githubusercontent.com/tabler/tabler-icons/ab7315d660c76f97d4b9ae9b2ff2aacba1d61730/icons/outline/cpu.svg | `d9ecd8e0f4a140f8` | Apple silicon, on the platform line of the install section (/v4) |
+| `code.svg` | https://raw.githubusercontent.com/tabler/tabler-icons/ab7315d660c76f97d4b9ae9b2ff2aacba1d61730/icons/outline/code.svg | `ff3d40c83c1a908b` | VS Code, in the link of the Other Agents card (/v4) |
+
+Licence text (copy of the `LICENSE` file at the pinned commit):
+
+```text
+MIT License
+
+Copyright (c) 2020-2026 Paweł Kuna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
 ## Simple Icons: CC0 1.0 Universal
 
 - Set: Simple Icons, folder `icons/`.
@@ -54,21 +93,8 @@ SOFTWARE.
 
 | File | Source URL | SHA-256 (start) | Used for |
 |---|---|---|---|
-| `apple.svg` | https://raw.githubusercontent.com/simple-icons/simple-icons/90646e4bf7f3b89df6c37e65baf3e7bc759a517c/icons/apple.svg | `93439c0957e7e4c5` | Apple silicon, on the platform line of the install section |
 | `linux.svg` | https://raw.githubusercontent.com/simple-icons/simple-icons/90646e4bf7f3b89df6c37e65baf3e7bc759a517c/icons/linux.svg | `4c72b822632cf653` | Linux x86_64, on the platform line of the install section |
 | `github.svg` | https://raw.githubusercontent.com/simple-icons/simple-icons/90646e4bf7f3b89df6c37e65baf3e7bc759a517c/icons/github.svg | `5e2d81ef6b15846a` | GitHub, next to the GitHub links in the top bar and the footer (/v4) |
 
-The LobeHub set also has an `apple.svg`. It is not used: the Apple and Linux marks come from one set, Simple Icons, so the two look alike.
 
-## Codicons (Microsoft): CC BY 4.0
-
-- Set: Codicons, the icon font of Visual Studio Code, folder `src/icons/`.
-- Project: https://github.com/microsoft/vscode-codicons
-- Pinned commit: `bcc74f01d4c8e43fbfe375912ef5ecca9cfbc009`
-- Licence of the icons: Creative Commons Attribution 4.0 International (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ (licence file: https://raw.githubusercontent.com/microsoft/vscode-codicons/bcc74f01d4c8e43fbfe375912ef5ecca9cfbc009/LICENSE).
-- Attribution: "vscode" icon from Codicons by Microsoft Corporation, CC BY 4.0. The file is byte-identical to the source file (no change).
-- Neither LobeHub Icons nor Simple Icons has a VS Code mark (checked at their pinned commits), so this one mark comes from Codicons.
-
-| File | Source URL | SHA-256 (start) | Used for |
-|---|---|---|---|
-| `vscode.svg` | https://raw.githubusercontent.com/microsoft/vscode-codicons/bcc74f01d4c8e43fbfe375912ef5ecca9cfbc009/src/icons/vscode.svg | `f9130337f239b034` | VS Code, in the link of the Other Agents card (/v4) |
+`linux.svg` is Tux, the Linux penguin. Tux was drawn by Larry Ewing (lewing@isc.tamu.edu) with The GIMP; his notice allows use if he and The GIMP are acknowledged. Linux is a registered trademark of Linus Torvalds.

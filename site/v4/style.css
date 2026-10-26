@@ -94,7 +94,7 @@ code,.command pre code{font-size:14px;line-height:1.7}
 
 /* Icons: the SVG files in icons/ are masks, so the colour follows the text. */
 .ico{display:inline-block;flex:none;width:1em;height:1em;background:currentColor;vertical-align:-.12em;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
-.ico-apple{-webkit-mask-image:url(../icons/apple.svg);mask-image:url(../icons/apple.svg)}
+.ico-cpu{-webkit-mask-image:url(../icons/cpu.svg);mask-image:url(../icons/cpu.svg)}
 .ico-linux{-webkit-mask-image:url(../icons/linux.svg);mask-image:url(../icons/linux.svg)}
 .ico-claude{-webkit-mask-image:url(../icons/claude.svg);mask-image:url(../icons/claude.svg)}
 .ico-claudecode{-webkit-mask-image:url(../icons/claudecode.svg);mask-image:url(../icons/claudecode.svg)}
@@ -161,8 +161,8 @@ main h2,.install-heading h2,.faq h2{font-size:42px;line-height:1.12;letter-spaci
   .case-study .case-image{grid-column:2;grid-row:1/span 2;align-self:stretch;display:flex;flex-direction:column;margin:0}
   .case-study .case-image img{flex:1 1 0;min-height:0;height:auto;aspect-ratio:auto;object-fit:cover}
 }
-/* VS Code: its mark from Codicons (CC BY 4.0, see icons/LICENSES.md), so every agent link has an icon. */
-.ico-vscode{-webkit-mask-image:url(../icons/vscode.svg);mask-image:url(../icons/vscode.svg)}
+/* VS Code: a generic code sign from Tabler Icons (MIT, see icons/LICENSES.md), so every agent link has an icon. */
+.ico-code{-webkit-mask-image:url(../icons/code.svg);mask-image:url(../icons/code.svg)}
 #install-vs-code{padding-left:0}
 /* GitHub: its mark from Simple Icons (CC0, see icons/LICENSES.md) next to the GitHub links in the top bar and the footer. */
 .ico-github{-webkit-mask-image:url(../icons/github.svg);mask-image:url(../icons/github.svg)}
