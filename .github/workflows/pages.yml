@@ -1,6 +1,6 @@
 # Publish the single landing page in site/ to GitHub Pages.
 # The only event is a start by hand. The runner budget is small, so no push or
-# pull request starts this workflow (the same rule as the workflows of topopt-demo).
+# pull request starts this workflow (the same rule as the workflows of topopt).
 name: pages
 
 on:
