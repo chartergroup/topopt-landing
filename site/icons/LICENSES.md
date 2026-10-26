@@ -59,6 +59,15 @@ SOFTWARE.
 
 The LobeHub set also has an `apple.svg`. It is not used: the Apple and Linux marks come from one set, Simple Icons, so the two look alike.
 
-## No icon
+## Codicons (Microsoft): CC BY 4.0
 
-- VS Code: neither set has a VS Code mark (checked at the two pinned commits). The page names it as text only.
+- Set: Codicons, the icon font of Visual Studio Code, folder `src/icons/`.
+- Project: https://github.com/microsoft/vscode-codicons
+- Pinned commit: `bcc74f01d4c8e43fbfe375912ef5ecca9cfbc009`
+- Licence of the icons: Creative Commons Attribution 4.0 International (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ (licence file: https://raw.githubusercontent.com/microsoft/vscode-codicons/bcc74f01d4c8e43fbfe375912ef5ecca9cfbc009/LICENSE).
+- Attribution: "vscode" icon from Codicons by Microsoft Corporation, CC BY 4.0. The file is byte-identical to the source file (no change).
+- Neither LobeHub Icons nor Simple Icons has a VS Code mark (checked at their pinned commits), so this one mark comes from Codicons.
+
+| File | Source URL | SHA-256 (start) | Used for |
+|---|---|---|---|
+| `vscode.svg` | https://raw.githubusercontent.com/microsoft/vscode-codicons/bcc74f01d4c8e43fbfe375912ef5ecca9cfbc009/src/icons/vscode.svg | `f9130337f239b034` | VS Code, in the link of the Other Agents card (/v4) |

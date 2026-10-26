@@ -134,3 +134,33 @@ code,.command pre code{font-size:14px;line-height:1.7}
 .hook-video .clip-toggle:focus-visible{outline:3px solid #597b20;outline-offset:3px}
 .clip-glyph{display:inline-block;width:12px;height:12px;flex:none;background:linear-gradient(90deg,currentColor 0 36%,transparent 36% 64%,currentColor 64% 100%)}
 .clip-toggle[data-state=paused] .clip-glyph{background:currentColor;-webkit-clip-path:polygon(8% 0,100% 50%,8% 100%);clip-path:polygon(8% 0,100% 50%,8% 100%)}
+
+/* Owner's edits of 2026-10-26, round 2: one size for the section labels and headings, one top spacing for all sections,
+   the hero title level with the top of a shorter viewer, Examples at the right edge of the intro text, and the
+   workflow and real-world visuals alone in the right half. */
+.section .eyebrow,.install-heading .eyebrow,.hook-copy .eyebrow{font-size:18px;margin-bottom:20px}
+main h2,.install-heading h2,.faq h2{font-size:42px;line-height:1.12;letter-spacing:-1.8px}
+.section,.install-section{padding-top:80px;padding-bottom:80px}
+.install-heading{align-items:end}
+.hook-grid{align-items:start}
+.hero .actions{max-width:560px}
+@media(max-width:1000px){main h2,.install-heading h2,.faq h2{font-size:38px}.section,.install-section{padding-top:64px;padding-bottom:64px}}
+@media(max-width:720px){.section .eyebrow,.install-heading .eyebrow,.hook-copy .eyebrow{font-size:15px;margin-bottom:16px}main h2,.install-heading h2,.faq h2{font-size:34px;letter-spacing:-1.4px}.section,.install-section{padding-top:54px;padding-bottom:54px}}
+@media(min-width:1001px){
+  .hero{min-height:0;align-items:stretch}
+  .hero-copy{align-self:start;padding-top:0}
+  .hero-part{align-self:stretch;min-height:0}
+  .hero-part .model-viewer{min-height:540px}
+  #how,.case-study .section{display:grid;grid-template-columns:1fr 1fr;column-gap:72px;align-items:start}
+  #how .section-heading,.case-study .section-heading{grid-column:1;grid-row:1;max-width:none}
+  #how .workflow,.case-study .case-grid{display:contents}
+  #how .steps,.case-study .case-copy{grid-column:1;grid-row:2;margin-top:40px}
+  #how .brief-panel{grid-column:2;grid-row:1/span 2;margin:0;align-self:stretch;display:flex;flex-direction:column}
+  #how .brief-sketch{flex:1 1 auto;display:flex;flex-direction:column}
+  #how .brief-sketch>a{flex:1 1 auto;display:flex;align-items:center;background:#f8fafc}
+  .case-study .case-image{grid-column:2;grid-row:1/span 2;align-self:stretch;display:flex;flex-direction:column;margin:0}
+  .case-study .case-image img{flex:1 1 0;min-height:0;height:auto;aspect-ratio:auto;object-fit:cover}
+}
+/* VS Code: its mark from Codicons (CC BY 4.0, see icons/LICENSES.md), so every agent link has an icon. */
+.ico-vscode{-webkit-mask-image:url(../icons/vscode.svg);mask-image:url(../icons/vscode.svg)}
+#install-vs-code{padding-left:0}
