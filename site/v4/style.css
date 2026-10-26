@@ -164,3 +164,6 @@ main h2,.install-heading h2,.faq h2{font-size:42px;line-height:1.12;letter-spaci
 /* VS Code: its mark from Codicons (CC BY 4.0, see icons/LICENSES.md), so every agent link has an icon. */
 .ico-vscode{-webkit-mask-image:url(../icons/vscode.svg);mask-image:url(../icons/vscode.svg)}
 #install-vs-code{padding-left:0}
+/* GitHub: its mark from Simple Icons (CC0, see icons/LICENSES.md) next to the GitHub links in the top bar and the footer. */
+.ico-github{-webkit-mask-image:url(../icons/github.svg);mask-image:url(../icons/github.svg)}
+.nav-github,.footer-github{display:inline-flex;align-items:center;gap:7px}
