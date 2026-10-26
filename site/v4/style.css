@@ -74,7 +74,7 @@ code,.command pre code{font-size:14px;line-height:1.7}
 @media(max-width:1000px){.wrap{padding-left:28px;padding-right:28px}.hero .eyebrow{font-size:20px}.hero h1{font-size:50px}.intro{font-size:19px}.hero{gap:28px}.nav nav{gap:22px}.install-heading{align-items:start}.install-heading h2{font-size:38px}.install-heading .platforms{max-width:290px}.workflow,.case-grid{gap:32px}.part-top .mono,.panel-bar .mono{font-size:12px}}
 @media(max-width:720px){.wrap{padding-left:22px;padding-right:22px}.hero{padding-top:20px;padding-bottom:32px}.hero .eyebrow{font-size:20px}.hero h1{font-size:48px}.intro{font-size:19px}.actions{gap:18px}.button.small{font-size:15px}.part-top .mono{font-size:12px}.viewer-hint{font-size:12px;top:16px}.viewer-tools{left:12px;gap:5px}.viewer-tools button{font-size:14px;padding:8px 9px;min-height:40px}.install-heading{display:block;margin-bottom:26px}.install-heading>div+div{margin-top:20px}.install-heading h2{font-size:38px}.install-section{padding:36px 0}.agent-grid{grid-template-columns:1fr;gap:18px}.install-card{padding:22px}.install-card h3{font-size:25px}.install-heading .platforms{font-size:14px;max-width:none}.section-intro{font-size:19px}.case-image figcaption{font-size:12px}.footer>div{font-size:15px}.steps p,.case-copy>p,.hook-copy>p:not(.eyebrow),.faq details p{font-size:18px}.mono,.eyebrow{font-size:14px}.section{padding-top:54px;padding-bottom:54px}}
 
-/* Owner's edits of 2026-10-26: hero title and buttons, full-height viewer, platform and agent icons, section bands, visuals on the right, the clip button. */
+/* Owner's edits of 2026-10-26: hero title and buttons, full-height viewer, section bands, visuals on the right, the clip button. */
 /* Hero: Install at the left, Examples at the right edge of the text column; both with the padding of the Get started button. */
 .hero-copy{min-width:0}
 .hero .actions{justify-content:space-between}
@@ -92,24 +92,6 @@ code,.command pre code{font-size:14px;line-height:1.7}
   .viewer-hint{top:52px}
 }
 
-/* Icons: the SVG files in icons/ are masks, so the colour follows the text. */
-.ico{display:inline-block;flex:none;width:1em;height:1em;background:currentColor;vertical-align:-.12em;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
-.ico-apple{-webkit-mask-image:url(../icons/apple.svg);mask-image:url(../icons/apple.svg)}
-.ico-linux{-webkit-mask-image:url(../icons/linux.svg);mask-image:url(../icons/linux.svg)}
-.ico-claude{-webkit-mask-image:url(../icons/claude.svg);mask-image:url(../icons/claude.svg)}
-.ico-claudecode{-webkit-mask-image:url(../icons/claudecode.svg);mask-image:url(../icons/claudecode.svg)}
-.ico-cursor{-webkit-mask-image:url(../icons/cursor.svg);mask-image:url(../icons/cursor.svg)}
-.ico-codex{-webkit-mask-image:url(../icons/codex.svg);mask-image:url(../icons/codex.svg)}
-.ico-geminicli{-webkit-mask-image:url(../icons/geminicli.svg);mask-image:url(../icons/geminicli.svg)}
-.platform-row{display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px}
-.install-heading .platforms.platform-row{max-width:none}
-.plat{display:inline-flex;align-items:center;gap:8px}
-.plat .ico{width:1.1em;height:1.1em;vertical-align:baseline}
-.install-card h3{display:flex;align-items:center;gap:10px}
-.install-card h3 .ico{width:.85em;height:.85em;vertical-align:baseline}
-.agent-links a{display:inline-flex;align-items:center;gap:9px}
-.agent-links .ico{width:.9em;height:.9em;vertical-align:baseline}
-#install-vs-code{padding-left:calc(.9em + 9px)}
 
 /* One band background for the install section, the real-world example and the questions; a band spans the page width. */
 :root{--band:#e8edda;--band-line:#c5ceb4}
@@ -161,9 +143,3 @@ main h2,.install-heading h2,.faq h2{font-size:42px;line-height:1.12;letter-spaci
   .case-study .case-image{grid-column:2;grid-row:1/span 2;align-self:stretch;display:flex;flex-direction:column;margin:0}
   .case-study .case-image img{flex:1 1 0;min-height:0;height:auto;aspect-ratio:auto;object-fit:cover}
 }
-/* VS Code: its mark from Codicons (CC BY 4.0, see icons/LICENSES.md), so every agent link has an icon. */
-.ico-vscode{-webkit-mask-image:url(../icons/vscode.svg);mask-image:url(../icons/vscode.svg)}
-#install-vs-code{padding-left:0}
-/* GitHub: its mark from Simple Icons (CC0, see icons/LICENSES.md) next to the GitHub links in the top bar and the footer. */
-.ico-github{-webkit-mask-image:url(../icons/github.svg);mask-image:url(../icons/github.svg)}
-.nav-github,.footer-github{display:inline-flex;align-items:center;gap:7px}
