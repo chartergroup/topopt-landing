@@ -50,17 +50,6 @@ summary{font-size:16px}
 .band .case-image figcaption{border-top-color:var(--band-line)}
 .hook-section{border-top:0}
 
-/* Icons: the SVG files in icons/ are masks, so the colour follows the text. */
-.ico{display:inline-block;flex:none;width:1.05em;height:1.05em;background:currentColor;vertical-align:-.16em;
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
-.ico-apple{-webkit-mask-image:url(icons/apple.svg);mask-image:url(icons/apple.svg)}
-.ico-linux{-webkit-mask-image:url(icons/linux.svg);mask-image:url(icons/linux.svg)}
-.ico-claude{-webkit-mask-image:url(icons/claude.svg);mask-image:url(icons/claude.svg)}
-.ico-claudecode{-webkit-mask-image:url(icons/claudecode.svg);mask-image:url(icons/claudecode.svg)}
-.ico-cursor{-webkit-mask-image:url(icons/cursor.svg);mask-image:url(icons/cursor.svg)}
-.ico-codex{-webkit-mask-image:url(icons/codex.svg);mask-image:url(icons/codex.svg)}
-.ico-geminicli{-webkit-mask-image:url(icons/geminicli.svg);mask-image:url(icons/geminicli.svg)}
-.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
 /* Hero: two buttons with the padding of the Get started button. */
 .hero .actions{margin-top:34px;gap:14px;flex-wrap:wrap}
@@ -68,16 +57,9 @@ summary{font-size:16px}
 .button.ghost{background:transparent;color:var(--ink)}
 .button.ghost:hover{background:#20231e12;color:var(--ink)}
 
-/* Platforms and agents. */
+/* Platforms and the other agents. */
 .platforms{margin-top:30px;line-height:1.9}
-.platform-row{display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;color:var(--ink)}
-.plat{display:inline-flex;align-items:center;gap:8px}
-.plat .ico{width:1.1em;height:1.1em;vertical-align:baseline}
-.install-card-head h3{display:flex;align-items:center;gap:10px}
-.install-card-head h3 .ico{width:1.05em;height:1.05em;vertical-align:baseline}
 .other-clients summary{align-items:center;justify-content:flex-start;gap:8px 18px;flex-wrap:wrap}
-.agent-icons{display:inline-flex;align-items:center;gap:15px;color:var(--muted)}
-.agent-icons .ico{width:17px;height:17px;vertical-align:baseline}
 .other-clients summary .plus{margin-left:auto}
 
 /* The clip: no native controls over the numbers; one button under it. */
