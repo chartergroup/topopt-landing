@@ -1,0 +1,110 @@
+/* Variant v3: the owner's edits of 2026-10-26 on top of v2. Overrides style.css only. */
+.command.dark{background:#20231e;border:0;border-radius:7px;position:relative}
+.command.dark pre{padding:18px 20px 14px;white-space:pre;overflow-x:auto;line-height:1.75}
+.command.dark pre code{font-size:15px;color:#eef0e6}
+.command.dark .copy-button{background:#3a4135;color:#eef0e6;border:1px solid #5a6352;font-size:13px;padding:6px 14px;margin:0 14px 14px auto}
+/* type scale: body 16-18 px, secondary 15-16 px, nothing under 12-13 px */
+
+.eyebrow,.mono{font-size:12px}
+.intro{font-size:18px;line-height:1.7;max-width:500px}
+.nav nav{font-size:15px}
+.button{font-size:15px}
+.text-link{font-size:15px}
+.section-intro{font-size:17px;max-width:600px}
+.steps h3{font-size:21px}
+.steps p{font-size:16px;max-width:420px}
+.step-num{font-size:12px}
+.case-copy>p{font-size:16px}
+.case-facts{font-size:14px}
+.case-image figcaption,.hero-part figcaption{font-size:12px}
+.hook-copy>p:not(.eyebrow){font-size:16px;max-width:420px}
+.hook-copy>p.result-line{font-size:15px}
+.mass-comparison .mono{font-size:12px}
+.install-grid>div>p:not(.eyebrow){font-size:17px}
+.platforms{font-family:inherit;font-size:15px}
+.install-card-head h3{font-size:21px}
+.pill{font-size:12px}
+.install-card p{font-size:15px}
+.install-card .text-link{font-size:15px;border:1px solid var(--ink);border-radius:5px;padding:11px 16px;text-decoration:none}
+code{font-size:14px}
+summary{font-size:16px}
+.client-list a{font-size:15px;font-weight:650}
+.client-list p{font-size:14px}
+.faq details p{font-size:16px}
+.footer p{font-size:14px}
+.footer>div{font-size:13px}
+.viewer-tools button{font-size:12px}
+.part-top .mono,.part-tag,.viewer-hint{font-size:11px}
+@media(max-width:720px){
+  .intro{font-size:17px}
+  .command.dark pre code{font-size:13px}
+  .steps p,.hook-copy>p:not(.eyebrow),.faq details p,.case-copy>p{font-size:16px}
+
+}
+
+/* One background for the install section, the real-world example and the questions. */
+:root{--band:#e8edda;--band-line:#c5ceb4}
+.install-section,.band{background:var(--band)}
+.band .case-facts div,.band .faq details,.band .faq details:last-child{border-color:var(--band-line)}
+.band .case-image{background:#f1f3e8}
+.band .case-image figcaption{border-top-color:var(--band-line)}
+.hook-section{border-top:0}
+
+/* Icons: the SVG files in icons/ are masks, so the colour follows the text. */
+.ico{display:inline-block;flex:none;width:1.05em;height:1.05em;background:currentColor;vertical-align:-.16em;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+.ico-apple{-webkit-mask-image:url(icons/apple.svg);mask-image:url(icons/apple.svg)}
+.ico-linux{-webkit-mask-image:url(icons/linux.svg);mask-image:url(icons/linux.svg)}
+.ico-claude{-webkit-mask-image:url(icons/claude.svg);mask-image:url(icons/claude.svg)}
+.ico-claudecode{-webkit-mask-image:url(icons/claudecode.svg);mask-image:url(icons/claudecode.svg)}
+.ico-cursor{-webkit-mask-image:url(icons/cursor.svg);mask-image:url(icons/cursor.svg)}
+.ico-codex{-webkit-mask-image:url(icons/codex.svg);mask-image:url(icons/codex.svg)}
+.ico-geminicli{-webkit-mask-image:url(icons/geminicli.svg);mask-image:url(icons/geminicli.svg)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* Hero: two buttons with the padding of the Get started button. */
+.hero .actions{margin-top:34px;gap:14px;flex-wrap:wrap}
+.hero .button.small{padding:11px 16px;font-size:15px;gap:24px}
+.button.ghost{background:transparent;color:var(--ink)}
+.button.ghost:hover{background:#20231e12;color:var(--ink)}
+
+/* Platforms and agents. */
+.platforms{margin-top:30px;line-height:1.9}
+.platform-row{display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;color:var(--ink)}
+.plat{display:inline-flex;align-items:center;gap:8px}
+.plat .ico{width:1.1em;height:1.1em;vertical-align:baseline}
+.install-card-head h3{display:flex;align-items:center;gap:10px}
+.install-card-head h3 .ico{width:1.05em;height:1.05em;vertical-align:baseline}
+.other-clients summary{align-items:center;justify-content:flex-start;gap:8px 18px;flex-wrap:wrap}
+.agent-icons{display:inline-flex;align-items:center;gap:15px;color:var(--muted)}
+.agent-icons .ico{width:17px;height:17px;vertical-align:baseline}
+.other-clients summary .plus{margin-left:auto}
+
+/* The clip: no native controls over the numbers; one button under it. */
+.hook-video{position:relative}
+.hook-video video{background:#10161f}
+.clip-bar{display:flex;justify-content:flex-end;padding:10px 12px}
+.hook-video .clip-toggle{display:inline-flex;align-items:center;gap:9px;min-height:36px;padding:7px 14px;background:var(--paper);color:var(--ink);border:1px solid var(--ink);border-radius:5px;font-size:14px;font-weight:650;line-height:1.2;text-decoration:none}
+.hook-video .clip-toggle:hover{background:#fff}
+.hook-video .clip-toggle:focus-visible{outline:3px solid #597b20;outline-offset:3px}
+.clip-glyph{display:inline-block;width:12px;height:12px;flex:none;background:linear-gradient(90deg,currentColor 0 36%,transparent 36% 64%,currentColor 64% 100%)}
+.clip-toggle[data-state=paused] .clip-glyph{background:currentColor;-webkit-clip-path:polygon(8% 0,100% 50%,8% 100%);clip-path:polygon(8% 0,100% 50%,8% 100%)}
+
+/* Desktop: the 3D viewer fills the full height of the first section. */
+@media(min-width:1001px){
+  .hero{min-height:clamp(560px,calc(100vh - 100px),920px);min-height:clamp(560px,calc(100svh - 100px),920px);padding-top:24px;padding-bottom:40px;align-items:stretch}
+  .hero-copy{align-self:center}
+  .hero-part{align-self:stretch}
+  .hero-part .part-top{position:absolute;left:0;right:0;top:0;pointer-events:none}
+  .hero-part .model-viewer{flex:1 1 auto;height:auto;min-height:420px}
+  .viewer-hint{top:50px}
+}
+@media(min-width:1500px){.hero{padding-top:24px;padding-bottom:40px}}
+@media(max-width:1000px){.hero .actions{margin-top:28px}}
+
+/* Narrow screens: a grid column may shrink below its longest command, and the commands wrap. */
+.hero-copy{min-width:0}
+@media(max-width:1180px){.install-grid>*{min-width:0}.command.dark pre{white-space:pre-wrap;overflow-wrap:anywhere}}
+
+/* The last band ends the page: no hairline between it and the footer. */
+.footer{border-top:0}
