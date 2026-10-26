@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>topopt — Agent prompt to optimized part</title>
+  <meta name="description" content="Start with text, a sketch, or a CAD design. Your agent helps define loads and constraints and runs generative design on your computer.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="topopt">
+  <meta property="og:title" content="topopt — Agent prompt to optimized part">
+  <meta property="og:description" content="Start with text, a sketch, or a CAD design. Your agent helps define loads and constraints and runs generative design on your computer.">
+  <meta property="og:url" content="https://chartergroup.github.io/topopt-landing/">
+  <meta property="og:image" content="https://chartergroup.github.io/topopt-landing/assets/social-preview-optimized.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="topopt: Agent prompt to optimized part. Running locally. A steel bicycle headtube design appears alongside the headline.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="topopt — Agent prompt to optimized part">
+  <meta name="twitter:description" content="Start with text, a sketch, or a CAD design. Your agent helps define loads and constraints and runs generative design on your computer.">
+  <meta name="twitter:image" content="https://chartergroup.github.io/topopt-landing/assets/social-preview-optimized.jpg">
+  <meta name="twitter:image:alt" content="topopt: Agent prompt to optimized part. Running locally. A steel bicycle headtube design appears alongside the headline.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="wrap nav">
+    <a class="brand" href="#top" aria-label="topopt home"><span class="brand-mark" aria-hidden="true">t.</span>topopt</a>
+    <nav aria-label="Main navigation"><a href="#how">Workflow</a><a href="#headlug">Example</a><a class="nav-github" href="https://github.com/chartergroup/topopt">GitHub ↗</a></nav>
+    <a class="button small" href="#install">Get started <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main">
+    <section class="wrap hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">Agent prompt to optimized part<span>Running locally</span></h1>
+        <p class="intro">Start from text, a sketch, or a CAD design, then let your agent work through the loads and constraints and run a generative design on your own computer.</p>
+        <div class="actions"><a class="button small" href="#install">Install <span aria-hidden="true">↓</span></a><a class="button small ghost" href="#headlug">Examples <span aria-hidden="true">↓</span></a></div>
+      </div>
+      <figure class="hero-part">
+        <div class="part-top"><span class="mono">001 / Bicycle Headtube</span><span class="part-tag">Final print model · 17-4PH steel</span></div>
+        <div class="model-viewer" id="headlug-viewer" role="group" aria-label="Interactive final bicycle head lug. Drag to rotate, use the zoom buttons, or focus the model and use arrow keys to rotate. Press Home to reset.">
+          <img class="model-fallback" src="../assets/headlug-isometric.png" width="1500" height="1100" alt="The final bicycle head lug: clean organic struts join the two headset collars and carbon-tube sockets.">
+          <p class="viewer-message" aria-live="polite">Loading the final print model…</p>
+          <div class="viewer-tools" aria-label="Model view controls">
+            <button type="button" data-view="reset" aria-label="Reset model view">Reset ↺</button>
+            <button type="button" data-view="side" aria-label="Show side view">Side</button>
+            <button type="button" data-view="zoom-in" aria-label="Zoom in on head lug">+</button>
+            <button type="button" data-view="zoom-out" aria-label="Zoom out from head lug">−</button>
+            <button type="button" data-view="rotate" aria-label="Auto rotate model" aria-pressed="false">Rotate</button>
+          </div>
+          <span class="viewer-hint">Drag to rotate · buttons to zoom</span>
+        </div>
+
+      </figure>
+    </section>
+
+
+    <section class="install-section" id="install" aria-labelledby="install-title"><div class="wrap">
+      <div class="install-heading"><div><p class="eyebrow">Get started</p><h2 id="install-title">Install topopt</h2></div><div><p>Install <code>uv</code> before starting.</p><p class="platforms platform-row"><span class="plat"><span class="ico ico-apple" aria-hidden="true"></span>Apple silicon</span><span class="plat"><span class="ico ico-linux" aria-hidden="true"></span>Linux x86_64</span></p></div></div>
+      <div class="agent-grid">
+        <article class="install-card" id="install-claude-code"><h3><span class="ico ico-claudecode" aria-hidden="true"></span>Claude Code</h3><div class="command"><pre id="claude-command"><code>claude plugin marketplace add chartergroup/topopt#v0.1.0
+claude plugin install topopt@topopt-demo</code></pre><button class="copy-button" type="button" data-copy="claude-command" aria-label="Copy Claude Code installation commands">Copy</button></div><p>Start <code>claude</code> in a work folder and run <code>/topopt:start-here</code>.</p><a class="text-link" href="https://github.com/chartergroup/topopt#quick-start-claude-code-plugin">Claude Code setup ↗</a></article>
+        <article class="install-card" id="install-codex-cli"><h3><span class="ico ico-codex" aria-hidden="true"></span>Codex</h3><div class="command"><pre id="codex-command"><code>git clone https://github.com/chartergroup/topopt
+cd topopt
+sh scripts/topopt-env.sh sync</code></pre><button class="copy-button" type="button" data-copy="codex-command" aria-label="Copy Codex installation commands">Copy</button></div><p>Start Codex in the checkout and trust the project. Ask it to use the <code>start-here</code> skill.</p><a class="text-link" href="https://github.com/chartergroup/topopt/blob/main/docs/clients.md#codex-cli">Codex CLI setup ↗</a></article>
+        <article class="install-card" id="install-cursor"><h3><span class="ico ico-cursor" aria-hidden="true"></span>Cursor</h3><div class="command"><pre id="cursor-command"><code>git clone https://github.com/chartergroup/topopt
+cd topopt
+sh scripts/topopt-env.sh sync</code></pre><button class="copy-button" type="button" data-copy="cursor-command" aria-label="Copy Cursor installation commands">Copy</button></div><p>Open the checkout in Cursor and enable the topopt MCP server. Ask it to use the <code>start-here</code> skill.</p><a class="text-link" href="https://github.com/chartergroup/topopt/blob/main/docs/clients.md#cursor">Cursor setup ↗</a></article>
+        <article class="install-card" id="install-other-agents"><h3>Other Agents</h3><p>Connect topopt through MCP using the instructions for your client.</p><div class="agent-links"><a id="install-claude-desktop" href="https://github.com/chartergroup/topopt#quick-start-claude-desktop-extension-and-plugin-upload"><span class="ico ico-claude" aria-hidden="true"></span>Claude Desktop ↗</a><a id="install-vs-code" href="https://github.com/chartergroup/topopt/blob/main/docs/clients.md#vs-code-agent-mode-github-copilot">VS Code ↗</a><a id="install-gemini-cli" href="https://github.com/chartergroup/topopt/blob/main/docs/clients.md#gemini-cli"><span class="ico ico-geminicli" aria-hidden="true"></span>Gemini CLI ↗</a></div><a class="text-link" href="https://github.com/chartergroup/topopt/blob/main/docs/clients.md">All client instructions ↗</a></article>
+      </div>
+    </div></section>
+
+    <section class="wrap section" id="how" aria-labelledby="how-title">
+      <div class="section-heading"><p class="eyebrow">Workflow</p><h2 id="how-title">Bring your ideas.<br>Let your agent handle the complexity.</h2><p class="section-intro">Describe the part, how it attaches, and what it needs to carry.</p></div>
+      <div class="workflow">
+        <div class="brief-panel"><div class="panel-bar"><span class="dot" aria-hidden="true"></span><span class="mono">Example Brief</span><span class="mono">↗</span></div><blockquote>“I’m building a carbon and steel all-road bike with 3D-printed lugs. It would be dope if the headtube lug were topology optimized.”</blockquote><figure class="brief-sketch"><a href="../assets/early-frame-sketch.png" aria-label="Open the original frame drawing at full size"><img src="../assets/early-frame-sketch.png" width="1978" height="1279" loading="lazy" alt="The early allroad bicycle frame drawing supplied for this project, showing frame dimensions, angles, and the headtube position."></a><figcaption><a href="../assets/early-frame-sketch.png">Open the frame drawing at full size ↗</a></figcaption></figure></div>
+        <ol class="steps">
+          <li><span class="step-num">01</span><div><h3>Describe your part</h3><p>Share a sketch, a description, or existing geometry. Define the loads, interfaces, keep-outs, and material.</p></div></li>
+          <li><span class="step-num">02</span><div><h3>Run your design locally</h3><p>Review the time and memory estimates, choose a mesh, and start the optimization.</p></div></li>
+          <li><span class="step-num">03</span><div><h3>Watch it form. Get the files.</h3><p>Follow along with the design, inspect the results, and get a print-ready STL file.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="band case-study" id="headlug" aria-labelledby="case-title"><div class="wrap section">
+      <div class="section-heading"><p class="eyebrow">Bicycle Headtube</p><h2 id="case-title">Real-world example</h2><p class="section-intro">We wanted to build a custom bicycle with topology-optimized lugs and carbon tubes. Here’s how we built the headtube.</p></div>
+      <div class="case-grid"><div class="case-copy"><h3>We designed the headtube on an M1 MacBook Air.</h3><p>Our repo allowed us to define the loads and keep-outs, preserve the headset and tube interfaces, and optimize the headtube’s weight on a laptop.</p><p>We inspected the resulting geometry and prepared the manufacturing files for the steel headtube.</p><dl class="case-facts"><div><dt>Brief</dt><dd>A custom head lug joining carbon tubes</dd></div><div><dt>Material</dt><dd>17-4PH stainless steel · LPBF</dd></div><div><dt>Machine</dt><dd>Apple M1 · 16 GB RAM</dd></div></dl></div><figure class="case-image"><img src="../assets/headlug-side.png" width="1500" height="1100" loading="lazy" alt="Side view of the final head-lug design, with smooth open struts, precise headset collars, and carbon-tube sockets."><figcaption class="mono">FINAL HEAD-LUG DESIGN / SIDE VIEW</figcaption></figure></div>
+    </div></section>
+
+    <section class="wrap section hook-section" aria-labelledby="hook-title"><div class="hook-grid"><div class="hook-copy"><p class="eyebrow">Examples</p><h2 id="hook-title">Sample parts</h2><p>The repo comes with several simple, reproducible samples so you can try generative design for yourself.</p><div class="mass-comparison"><div><span class="mono">BEFORE</span><strong>85.6<span> g</span></strong></div><span class="mass-arrow" aria-hidden="true">→</span><div><span class="mono">AFTER</span><strong>26.5<span> g</span></strong></div></div><p class="result-line">The optimized hook uses 69% less mass than the starting design.</p><a class="text-link" href="https://github.com/chartergroup/topopt/tree/main/examples">Browse sample files on GitHub ↗</a></div><figure class="hook-video"><video id="hero-clip" muted loop playsinline preload="metadata" poster="../v3/media/hero-poster.jpg" width="1492" height="1440" aria-label="Recorded wall-hook optimization: the material distribution changes over 80 iterations, followed by a rotating view of the result."><source src="../v3/media/hero.mp4" type="video/mp4">Your browser cannot play this video.</video><div class="clip-bar"><button class="clip-toggle" id="clip-toggle" type="button" aria-controls="hero-clip" aria-label="Pause the clip"><span class="clip-glyph" aria-hidden="true"></span><span class="clip-label">Pause</span></button></div></figure></div></section>
+
+
+
+    <section class="band" aria-labelledby="faq-title"><div class="wrap faq section"><div><p class="eyebrow">A few practical things</p><h2 id="faq-title">Common questions</h2></div><div>
+      <details><summary>Do I need to write CAD or solver code? <span aria-hidden="true">+</span></summary><p>You can begin with a description and work with your agent to create the setup. Review the dimensions, loads, supports, and assumptions before running it. Existing STL regions and YAML inputs are another route.</p></details>
+      <details><summary>What does “local” mean? <span aria-hidden="true">+</span></summary><p>The numerical optimization and browser dashboard run on your computer. The AI agent is separate and may send prompts or tool results to its model provider.</p></details>
+      <details><summary>Can I use it for metal printing? <span aria-hidden="true">+</span></summary><p>The workflow accepts material properties and exports STL geometry. Select the properties and allowables for your material and process, then inspect walls, supports, powder access, interfaces, and finishing requirements with your manufacturing provider.</p></details>
+      <details><summary>What comes with the result? <span aria-hidden="true">+</span></summary><p>You receive a smooth STL, run metrics, and printability findings. Optional tools check the finished mesh’s stress and other constraints. Manufacturing readiness depends on the checks completed for the particular part.</p></details>
+    </div></div></section>
+  </main>
+  <footer class="wrap footer"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">t.</span>topopt</a><div><a href="https://github.com/chartergroup/topopt">GitHub ↗</a><a href="https://github.com/chartergroup/topopt/blob/main/LICENSE">MIT license</a><a href="https://github.com/chartergroup/topopt/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a></div></footer>
+  <script src="page.js"></script>
+  <script defer src="../vendor/three/headlug-viewer.js"></script>
+</body>
+</html>
