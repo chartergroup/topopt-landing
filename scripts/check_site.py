@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Check the static landing site: the gallery and every variant. Standard library only.
+"""Check the static landing page. Standard library only.
 
 Usage:
     python3 scripts/check_site.py site
 
-The site folder holds the gallery (index.html) and one folder for each variant
-(v1/, v2/, ... each with an index.html). The check finds the variants by their
-folder name, so a new variant needs no change here.
+The site folder holds a single landing page at index.html.
 
 Exit code 0: all checks pass. Exit code 1: one line for each problem. Exit code 2: bad usage.
 
@@ -19,15 +17,14 @@ Checks:
 - no known tracker word in the HTML, CSS or JavaScript;
 - every img has a non-empty alt; each page has lang, title, a meta description, one h1
   and no skipped heading level;
-- every variant page has the six client names;
-- every variant page has no meta word (private, not tested, status, preview, ...) in its visible text,
+- the landing page has the six client names;
+- the landing page has no meta word (private, not tested, status, preview, ...) in its visible text,
   title, meta description, alt text, aria-label or title attribute (text inside code and pre is not checked);
-- the gallery (the root page with class "gallery" on its body) links to every variant folder; after the launch
-  the root page is the chosen variant: it has no class "gallery", and then it gets the variant checks instead;
 - every font folder with .woff2 files has a licence file (OFL*, LICENSE*).
 """
 
 import argparse
+import hashlib
 import re
 import sys
 from html.parser import HTMLParser
@@ -45,7 +42,6 @@ TRACKER_WORDS = (
     "gtag", "analytics", "googletagmanager", "plausible", "matomo", "pixel",
     "doubleclick", "hotjar", "mixpanel", "fbq(",
 )
-VARIANT_DIR = re.compile(r"^v\d+$")
 ALLOWED_EXTERNAL_LINK = re.compile(r"^https://github\.com/chartergroup(?:[/?#]|$)")
 # the attributes that hold a URL, for every tag
 URL_ATTRS = ("href", "src", "poster", "action", "srcset", "data")
@@ -53,6 +49,20 @@ CSS_URL = re.compile(r"url\(\s*(['\"]?)(.*?)\1\s*\)", re.IGNORECASE)
 CSS_IMPORT = re.compile(r"@import\s+(?:url\(\s*)?(['\"])(.*?)\1", re.IGNORECASE)
 SCRIPT_URL = re.compile(r"(?:https?:)?//[A-Za-z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE)
 TEXT_SUFFIXES = (".html", ".css", ".js")
+# The owner-requested Three.js viewer is bundled locally, with its MIT licence.
+# Three.js contains shader references, the SVG namespace, and rendering identifiers
+# such as pixelRatio. These are not outbound requests or tracking pixels. Exempt
+# only this exact reviewed bundle, and reject any unrecorded replacement.
+PINNED_VENDOR_JS = {
+    "vendor/three/headlug-viewer.js": "b3b1eb9748257562ae32792d0eb0ae370dd50bc435fd58311c02c076a8dd26dd",
+}
+
+
+def pinned_vendor(site, path):
+    expected = PINNED_VENDOR_JS.get(path.relative_to(site).as_posix())
+    return bool(expected and hashlib.sha256(path.read_bytes()).hexdigest() == expected)
+
+
 META_RE = re.compile(
     "|".join(r"(?<![A-Za-z0-9])" + r"\s+".join(re.escape(w) for w in word.split()) for word in META_WORDS),
     re.IGNORECASE,
@@ -256,6 +266,8 @@ def check_trackers(site, problems):
     for path in sorted(site.rglob("*")):
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
+        if pinned_vendor(site, path):
+            continue
         for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             low = line.lower()
             for word in TRACKER_WORDS:
@@ -284,8 +296,8 @@ def check_basics(name, page, problems):
             problems.append("{}:{}: img has no alt text".format(name, line))
 
 
-def check_variant(name, page, problems):
-    """A variant page: the six clients and the meta-word guard."""
+def check_content(name, page, problems):
+    """The six clients and the meta-word guard."""
     text = " ".join(data for _, data in page.text)
     for client in CLIENTS:
         if client not in text:
@@ -306,11 +318,6 @@ def check_variant(name, page, problems):
             name, owners[match.start()], " ".join(match.group(0).lower().split()), context))
 
 
-def variant_dirs(site):
-    return sorted((p for p in site.iterdir() if p.is_dir() and VARIANT_DIR.match(p.name)),
-                  key=lambda p: int(p.name[1:]))
-
-
 def check_fonts(site, problems):
     fonts = site / "fonts"
     if not fonts.is_dir():
@@ -323,10 +330,9 @@ def check_fonts(site, problems):
 
 def run(site):
     problems = []
-    gallery = site / "index.html"
-    if not gallery.is_file():
-        return ["{}: the gallery is missing".format(name_of(site, gallery))]
-    variants = variant_dirs(site)
+    index = site / "index.html"
+    if not index.is_file():
+        return ["{}: index.html is missing".format(name_of(site, index))]
     pages = {}
     for path in sorted(site.rglob("*.html")):
         pages[path.resolve()] = parse_page(path)
@@ -340,37 +346,25 @@ def run(site):
     for css in sorted(site.rglob("*.css")):
         check_css_text(site, css.resolve(), name_of(site, css), 1, css.read_text(encoding="utf-8"), problems)
     for js in sorted(site.rglob("*.js")):
+        if pinned_vendor(site, js):
+            continue
+        if js.relative_to(site).as_posix() in PINNED_VENDOR_JS:
+            problems.append("{}: vendored viewer hash does not match the recorded bundle".format(name_of(site, js)))
         for match in SCRIPT_URL.finditer(js.read_text(encoding="utf-8")):
             problems.append("{}: URL of another host in a script: \"{}\"".format(name_of(site, js), match.group(0)))
     check_trackers(site, problems)
     check_fonts(site, problems)
-    root = pages[gallery.resolve()]
-    check_basics(name_of(site, gallery), root, problems)
-    root_is_gallery = "gallery" in root.body_classes
-    if not root_is_gallery:
-        # after the launch: the root page is the chosen variant (no class "gallery" on its body)
-        check_variant(name_of(site, gallery), root, problems)
-    gallery_targets = set()
-    for line, tag, attr, value in root.refs:
-        if tag == "a" and attr == "href" and classify(value) == "local":
-            target, _, error = resolve_local(site, gallery.resolve(), value)
-            if not error:
-                gallery_targets.add(target)
-    for folder in variants:
-        index = (folder / "index.html").resolve()
-        if index not in pages:
-            problems.append("{}: the variant has no index.html".format(name_of(site, folder)))
-            continue
-        check_basics(name_of(site, index), pages[index], problems)
-        check_variant(name_of(site, index), pages[index], problems)
-        if root_is_gallery and index not in gallery_targets:
-            problems.append("{}: the gallery has no link to the variant {}".format(name_of(site, gallery), folder.name))
+    for path, page in pages.items():
+        check_basics(name_of(site, path), page, problems)
+        check_content(name_of(site, path), page, problems)
+    if len(pages) != 1:
+        problems.append("site: expected exactly one HTML page at index.html")
     return problems
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Check the static landing site: the gallery and every variant.")
-    parser.add_argument("site", help="the site folder (the gallery index.html and the folders v1/, v2/, ...)")
+    parser = argparse.ArgumentParser(description="Check the static landing page.")
+    parser.add_argument("site", help="the site folder containing index.html")
     args = parser.parse_args(argv)
     site = Path(args.site)
     if not site.is_dir():
@@ -383,9 +377,7 @@ def main(argv=None):
             print(line, file=sys.stderr)
         print("check_site: {} problem(s)".format(len(problems)), file=sys.stderr)
         return 1
-    count = len(variant_dirs(site))
-    root = "the gallery" if "gallery" in parse_page(site / "index.html").body_classes else "the root page (a variant)"
-    print("check_site: all checks pass ({}, {} and {} variant folder(s))".format(site.name, root, count))
+    print("check_site: all checks pass ({}, one landing page)".format(site.name))
     return 0
 
 

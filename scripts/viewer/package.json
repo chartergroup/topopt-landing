@@ -1,0 +1,9 @@
+{
+  "name": "topopt-landing-viewer",
+  "private": true,
+  "scripts": {
+    "build": "esbuild headlug-viewer.js --bundle --format=iife --platform=browser --target=es2020 --minify --legal-comments=eof --outfile=../../site/vendor/three/headlug-viewer.js"
+  },
+  "dependencies": { "three": "0.186.1" },
+  "devDependencies": { "esbuild": "0.28.2" }
+}

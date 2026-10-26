@@ -1,5 +1,4 @@
-# Publish the landing site (the folder site/) to GitHub Pages: the gallery at the root and
-# one folder for each variant (site/v1/, site/v2/, ...). A new variant needs no change here.
+# Publish the single landing page in site/ to GitHub Pages.
 # The only event is a start by hand. The runner budget is small, so no push or
 # pull request starts this workflow (the same rule as the workflows of topopt-demo).
 name: pages
@@ -25,7 +24,7 @@ jobs:
       - name: Check out
         uses: actions/checkout@v6
 
-      - name: Check the gallery and every variant
+      - name: Check the landing page
         run: python3 scripts/check_site.py site
 
       - name: Configure Pages

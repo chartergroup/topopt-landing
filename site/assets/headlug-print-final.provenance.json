@@ -1,0 +1,11 @@
+{
+  "source": "print_final_upload/as_printed_S3_build_upload.stl",
+  "source_sha256": "932db0c14d5a06818d5deeda31eeeef8364500f32210f3a02ac506781e9fcde2",
+  "glb_sha256": "5f9a85b7167d990f1ad09a107bca505834a9edb5fa74271bf7bdc56aaa8f064f",
+  "faces": 193498,
+  "vertices": 96653,
+  "size_bytes": 4643240,
+  "operations": "Undo S3 build orientation using print_final/cad/scripts/printability.py rotation; rotate Z-up to Y-up; center. No further simplification or smoothing. Vertex normals affect lighting only.",
+  "material": "17-4PH stainless steel, per final BUILD_SHEET.md",
+  "provenance": "Final supplier-upload mesh; see print_final_upload/REPORT.md. Original full STL remains untouched."
+}
