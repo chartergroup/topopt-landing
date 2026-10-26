@@ -357,8 +357,10 @@ def run(site):
     for path, page in pages.items():
         check_basics(name_of(site, path), page, problems)
         check_content(name_of(site, path), page, problems)
-    if len(pages) != 1:
-        problems.append("site: expected exactly one HTML page at index.html")
+    # The landing page is index.html. A variant to compare with it is one page at v<N>/index.html.
+    for path in pages:
+        if not re.fullmatch(r"index\.html|v[0-9]+/index\.html", name_of(site, path).split("/", 1)[1]):
+            problems.append("{}: an HTML page must be index.html or v<N>/index.html".format(name_of(site, path)))
     return problems
 
 
@@ -377,7 +379,7 @@ def main(argv=None):
             print(line, file=sys.stderr)
         print("check_site: {} problem(s)".format(len(problems)), file=sys.stderr)
         return 1
-    print("check_site: all checks pass ({}, one landing page)".format(site.name))
+    print("check_site: all checks pass ({})".format(site.name))
     return 0
 
 
