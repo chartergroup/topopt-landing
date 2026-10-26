@@ -14,7 +14,7 @@ The selected design is served at the site root. The gallery and earlier page var
 - The original head-lug workflow's M1 / 16 GB hardware and numerical solve without model calls are documented in that project's `START_HERE.md`; the page attributes the hardware to the original workflow rather than to an independently repeated run of the new package.
 - Existing hook media and figures are reused from v1–v6: 85.6 g to 26.5 g, 69% less mass, 80 iterations. The video shows a recorded optimization.
 - Distinguishes local numerical compute from an AI client that may call a cloud model.
-- Keeps one recommended install; five other clients remain in a disclosure. Installation commands retain the current site's release pin.
+- Gives Claude Code, Codex, Cursor, and Other Agents equal installation sections. The Claude Code commands retain the release pin. Codex and Cursor use the repository checkout and launcher configuration.
 - No change to the public product name: topopt. Naming can be considered separately.
 - The owner explicitly requested Three.js, superseding the original no-JavaScript-library constraint for this page. It is pinned to 0.186.1, MIT licensed, and bundled locally with esbuild 0.28.2. The site requires no runtime build or CDN. Source and pinned build manifest are in `scripts/viewer/`; runtime and license are in `site/vendor/three/`.
 - The site checker exempts only the recorded hash of the reviewed local bundle from its word-based URL/tracker heuristics. Three.js includes harmless SVG namespace URLs, paper references and shader identifiers containing “pixel”. Changed or unknown scripts still receive the original scans; an unrecorded bundle change fails explicitly.
@@ -31,4 +31,4 @@ Serve `site/` and open `/`. Run `python3 scripts/check_site.py site` for the sit
 - Rewrote body copy in complete sentences, removed the requested slogans, captions, provenance prose, and setup note, and revised the headtube case study and sample section.
 - The sample-files link now explicitly says GitHub and opens the repository's `examples/` folder, which contains the hook, ladle, and interface examples.
 - Kept native video controls after removing the custom video caption/control row; updated `page.js` so it no longer expects the removed button. The video retains its reduced-motion handling.
-- Described specialized subagents specifically under Claude Code, matching the plugin's actual packaging. Described time/memory estimates as helping the agent choose a fitting mesh, rather than asserting that an estimator proves a mesh is universally best.
+- The later readability review removed the separate local-computation section, repeated agent descriptions, the hero footnote, and the generic footer sentence. Body text and small labels were enlarged. The install section uses four equally styled cards with individual copy controls and appears directly after a more compact hero.

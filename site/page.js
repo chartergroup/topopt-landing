@@ -6,13 +6,14 @@ const applyMotion = () => {
 };
 motion.addEventListener('change', applyMotion);
 applyMotion();
-document.querySelector('.copy-button').addEventListener('click', async (event) => {
-  const button = event.currentTarget;
-  try {
-    await navigator.clipboard.writeText(document.querySelector('#install-command').textContent.trim());
-    button.textContent = 'Copied';
-    setTimeout(() => { button.textContent = 'Copy'; }, 2000);
-  } catch {
-    button.textContent = 'Select the commands to copy';
-  }
+document.querySelectorAll('[data-copy]').forEach(button => {
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(document.getElementById(button.dataset.copy).textContent.trim());
+      button.textContent = 'Copied';
+      setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+    } catch {
+      button.textContent = 'Select the commands to copy';
+    }
+  });
 });
