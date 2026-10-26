@@ -33,3 +33,23 @@ document.querySelectorAll('[data-copy]').forEach(button => {
     }
   });
 });
+
+// The Examples button ends at the right edge of the intro text: the button row is as wide as the longest intro line.
+(function () {
+  var intro = document.querySelector(".hero .intro");
+  var actions = document.querySelector(".hero .actions");
+  if (!intro || !actions) return;
+  function fit() {
+    actions.style.maxWidth = "";
+    var range = document.createRange();
+    range.selectNodeContents(intro);
+    var left = intro.getBoundingClientRect().left;
+    var right = 0;
+    var rects = range.getClientRects();
+    for (var i = 0; i < rects.length; i++) right = Math.max(right, rects[i].right);
+    if (right > left) actions.style.maxWidth = Math.ceil(right - left) + "px";
+  }
+  fit();
+  window.addEventListener("resize", fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
