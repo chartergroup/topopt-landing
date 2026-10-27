@@ -127,3 +127,11 @@ main h2,.install-heading h2,.faq h2{font-size:42px;line-height:1.12;letter-spaci
   .case-study .case-image{grid-column:2;grid-row:1/span 2;align-self:stretch;display:flex;flex-direction:column;margin:0}
   .case-study .case-image img{flex:1 1 0;min-height:0;height:auto;aspect-ratio:auto;object-fit:cover}
 }
+
+/* The hero Install button: the padding of the Get started button, and the gap between its text and arrow of the text link. */
+.hero .actions .button{padding:11px 16px;gap:12px}
+
+/* GitHub: its mark from Simple Icons (CC0, see icons/LICENSES.md) next to the GitHub links in the top bar and the footer. */
+.ico{display:inline-block;flex:none;width:1em;height:1em;background:currentColor;vertical-align:-.12em;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+.ico-github{-webkit-mask-image:url(icons/github.svg);mask-image:url(icons/github.svg)}
+.nav-github,.footer-github{display:inline-flex;align-items:center;gap:7px}
