@@ -20,12 +20,19 @@ Checks:
 - the landing page has the six client names;
 - the landing page has no meta word (private, not tested, status, preview, ...) in its visible text,
   title, meta description, alt text, aria-label or title attribute (text inside code and pre is not checked);
-- every font folder with .woff2 files has a licence file (OFL*, LICENSE*).
+- every font folder with .woff2 files has a licence file (OFL*, LICENSE*);
+- search engines: a canonical link goes to SITE_ORIGIN only, and the root page has the canonical link
+  SITE_ORIGIN; JSON-LD is valid JSON, and its URLs go to SITE_ORIGIN, https://github.com/chartergroup/
+  or https://schema.org/ only; a variant page v<N>/index.html has <meta name="robots" content="noindex">,
+  and the root page has none; robots.txt names SITE_ORIGIN sitemap.xml; sitemap.xml lists only pages
+  of SITE_ORIGIN that exist in the site folder and are not noindex.
 """
 
 import argparse
 import hashlib
+import json
 import re
+import xml.etree.ElementTree as ET
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -43,6 +50,10 @@ TRACKER_WORDS = (
     "doubleclick", "hotjar", "mixpanel", "fbq(",
 )
 ALLOWED_EXTERNAL_LINK = re.compile(r"^https://github\.com/chartergroup(?:[/?#]|$)")
+# The address of the site. The canonical link, JSON-LD, robots.txt and the sitemap name it.
+SITE_ORIGIN = "https://topopt.ai/"
+JSON_LD_URL = re.compile(r"^(?:" + re.escape(SITE_ORIGIN) + r"|https://github\.com/chartergroup(?:[/?#]|$)|https://schema\.org(?:/|$))")
+SITEMAP_NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
 # the attributes that hold a URL, for every tag
 URL_ATTRS = ("href", "src", "poster", "action", "srcset", "data")
 CSS_URL = re.compile(r"url\(\s*(['\"]?)(.*?)\1\s*\)", re.IGNORECASE)
@@ -87,7 +98,10 @@ class Page(HTMLParser):
         self.prose = []  # visible text outside code and pre, and the text attributes: (line, kind, text)
         self.inline_css = []  # (line, text)
         self.inline_js = []  # (line, text)
-        self._in = []  # open title, style and script elements: (tag, line, parts)
+        self.json_ld = []  # (line, text)
+        self.canonicals = []  # (line, href)
+        self.robots = []  # the content of each <meta name="robots">
+        self._in = []  # open title, style and script elements: (tag, line, parts, kind)
         self._code_depth = 0
 
     def handle_starttag(self, tag, attrs):
@@ -99,6 +113,8 @@ class Page(HTMLParser):
             self.body_classes = tuple((a.get("class") or "").split())
         if a.get("id"):
             self.ids.add(a["id"])
+        if tag == "meta" and (a.get("name") or "").lower() == "robots":
+            self.robots.append((a.get("content") or "").lower())
         if tag == "meta" and (a.get("name") or "").lower() == "description":
             self.description = (a.get("content") or "").strip()
             self.prose.append((line, "meta description", self.description))
@@ -111,8 +127,12 @@ class Page(HTMLParser):
                 self.prose.append((line, name + " attribute", a[name]))
         if len(tag) == 2 and tag[0] == "h" and tag[1] in "123456":
             self.headings.append((line, int(tag[1])))
+        canonical = tag == "link" and "canonical" in (a.get("rel") or "").lower().split()
+        if canonical:
+            # A canonical link names the address of this page. The browser loads nothing from it.
+            self.canonicals.append((line, (a.get("href") or "").strip()))
         for attr in URL_ATTRS:
-            if attr not in a:
+            if attr not in a or (canonical and attr == "href"):
                 continue
             value = a[attr] if a[attr] is not None else ""
             if attr == "srcset":
@@ -126,19 +146,24 @@ class Page(HTMLParser):
         if tag in ("code", "pre"):
             self._code_depth += 1
         if tag in ("title", "style", "script"):
-            self._in.append((tag, line, []))
+            kind = tag
+            if tag == "script" and (a.get("type") or "").strip().lower() == "application/ld+json":
+                kind = "json-ld"
+            self._in.append((tag, line, [], kind))
 
     def handle_endtag(self, tag):
         if tag in ("code", "pre") and self._code_depth > 0:
             self._code_depth -= 1
         if self._in and self._in[-1][0] == tag:
-            name, line, parts = self._in.pop()
+            name, line, parts, kind = self._in.pop()
             body = "".join(parts)
             if name == "title":
                 self.title = body.strip()
                 self.prose.append((line, "title", self.title))
             elif name == "style":
                 self.inline_css.append((line, body))
+            elif kind == "json-ld":
+                self.json_ld.append((line, body))
             else:
                 self.inline_js.append((line, body))
 
@@ -328,6 +353,82 @@ def check_fonts(site, problems):
             problems.append("{}: font folder has no licence file (OFL.txt)".format(name_of(site, folder)))
 
 
+def json_ld_urls(value):
+    """Yield every string in a JSON value that is a URL with a host."""
+    if isinstance(value, dict):
+        for item in value.values():
+            yield from json_ld_urls(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from json_ld_urls(item)
+    elif isinstance(value, str) and re.match(r"^(?:[A-Za-z][A-Za-z0-9+.-]*:)?//", value.strip()):
+        yield value.strip()
+
+
+def is_noindex(page):
+    return any("noindex" in content.replace(" ", "").split(",") for content in page.robots)
+
+
+def check_search(site, pages, problems):
+    """The tags and files for search engines (see the module docstring)."""
+    root = (site / "index.html").resolve()
+    for path, page in sorted(pages.items()):
+        name = name_of(site, path)
+        for line, href in page.canonicals:
+            if not href.startswith(SITE_ORIGIN):
+                problems.append("{}:{}: canonical link is not to {}: \"{}\"".format(name, line, SITE_ORIGIN, href))
+        for line, body in page.json_ld:
+            try:
+                data = json.loads(body)
+            except ValueError as exc:
+                problems.append("{}:{}: JSON-LD is not valid JSON: {}".format(name, line, exc))
+                continue
+            for url in json_ld_urls(data):
+                if not JSON_LD_URL.match(url):
+                    problems.append("{}:{}: JSON-LD URL is not to {}, https://github.com/chartergroup/ or "
+                                    "https://schema.org/: \"{}\"".format(name, line, SITE_ORIGIN, url))
+        if path == root:
+            if [href for _, href in page.canonicals] != [SITE_ORIGIN]:
+                problems.append("{}: the root page needs one canonical link to {}".format(name, SITE_ORIGIN))
+            if is_noindex(page):
+                problems.append("{}: the root page has noindex".format(name))
+        elif not is_noindex(page):
+            problems.append("{}: a variant page needs <meta name=\"robots\" content=\"noindex\">".format(name))
+    sitemap_url = SITE_ORIGIN + "sitemap.xml"
+    robots = site / "robots.txt"
+    if not robots.is_file():
+        problems.append("{}: robots.txt is missing".format(name_of(site, robots)))
+    else:
+        named = [line.split(":", 1)[1].strip() for line in robots.read_text(encoding="utf-8").splitlines()
+                 if line.split(":", 1)[0].strip().lower() == "sitemap" and ":" in line]
+        if sitemap_url not in named:
+            problems.append("{}: no line \"Sitemap: {}\"".format(name_of(site, robots), sitemap_url))
+    sitemap = site / "sitemap.xml"
+    if not sitemap.is_file():
+        problems.append("{}: sitemap.xml is missing".format(name_of(site, sitemap)))
+        return
+    try:
+        tree = ET.parse(sitemap)
+    except ET.ParseError as exc:
+        problems.append("{}: sitemap.xml is not valid XML: {}".format(name_of(site, sitemap), exc))
+        return
+    locs = [(loc.text or "").strip() for loc in tree.getroot().iter(SITEMAP_NS + "loc")]
+    if not locs:
+        problems.append("{}: sitemap.xml lists no page".format(name_of(site, sitemap)))
+    for loc in locs:
+        if not loc.startswith(SITE_ORIGIN):
+            problems.append("{}: sitemap URL is not on {}: \"{}\"".format(name_of(site, sitemap), SITE_ORIGIN, loc))
+            continue
+        target = (site / unquote(urlsplit(loc).path).lstrip("/")).resolve()
+        if target.is_dir():
+            target = target / "index.html"
+        page = pages.get(target)
+        if page is None:
+            problems.append("{}: sitemap URL has no page in the site folder: \"{}\"".format(name_of(site, sitemap), loc))
+        elif is_noindex(page):
+            problems.append("{}: sitemap URL is a noindex page: \"{}\"".format(name_of(site, sitemap), loc))
+
+
 def run(site):
     problems = []
     index = site / "index.html"
@@ -354,6 +455,7 @@ def run(site):
             problems.append("{}: URL of another host in a script: \"{}\"".format(name_of(site, js), match.group(0)))
     check_trackers(site, problems)
     check_fonts(site, problems)
+    check_search(site, pages, problems)
     for path, page in pages.items():
         check_basics(name_of(site, path), page, problems)
         check_content(name_of(site, path), page, problems)
