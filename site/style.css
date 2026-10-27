@@ -73,3 +73,57 @@ code,.command pre code{font-size:14px;line-height:1.7}
 .agent-links{display:flex;flex-direction:column;align-items:start;gap:16px;margin:24px 0;font-size:18px}
 @media(max-width:1000px){.wrap{padding-left:28px;padding-right:28px}.hero .eyebrow{font-size:20px}.hero h1{font-size:50px}.intro{font-size:19px}.hero{gap:28px}.nav nav{gap:22px}.install-heading{align-items:start}.install-heading h2{font-size:38px}.install-heading .platforms{max-width:290px}.workflow,.case-grid{gap:32px}.part-top .mono,.panel-bar .mono{font-size:12px}}
 @media(max-width:720px){.wrap{padding-left:22px;padding-right:22px}.hero{padding-top:20px;padding-bottom:32px}.hero .eyebrow{font-size:20px}.hero h1{font-size:48px}.intro{font-size:19px}.actions{gap:18px}.button.small{font-size:15px}.part-top .mono{font-size:12px}.viewer-hint{font-size:12px;top:16px}.viewer-tools{left:12px;gap:5px}.viewer-tools button{font-size:14px;padding:8px 9px;min-height:40px}.install-heading{display:block;margin-bottom:26px}.install-heading>div+div{margin-top:20px}.install-heading h2{font-size:38px}.install-section{padding:36px 0}.agent-grid{grid-template-columns:1fr;gap:18px}.install-card{padding:22px}.install-card h3{font-size:25px}.install-heading .platforms{font-size:14px;max-width:none}.section-intro{font-size:19px}.case-image figcaption{font-size:12px}.footer>div{font-size:15px}.steps p,.case-copy>p,.hook-copy>p:not(.eyebrow),.faq details p{font-size:18px}.mono,.eyebrow{font-size:14px}.section{padding-top:54px;padding-bottom:54px}}
+
+/* Layout and section colours taken from /v4 (2026-10-27): full-height viewer, section bands, visuals on the right.
+   The texts, the blocks and the video of this page stay as they were. */
+.hero-copy{min-width:0}
+
+/* Desktop: the 3D viewer fills the full height of the first section. On narrower screens the heights above stay. */
+@media(min-width:1001px){
+  .hero{min-height:clamp(560px,calc(100vh - 100px),920px);min-height:clamp(560px,calc(100svh - 100px),920px);align-items:stretch}
+  .hero-copy{align-self:center}
+  .hero-part{align-self:stretch}
+  .hero-part .part-top{position:absolute;left:0;right:0;top:0;pointer-events:none}
+  .hero-part .model-viewer{flex:1 1 auto;height:auto;min-height:420px}
+  .viewer-hint{top:52px}
+}
+
+
+/* One band background for the install section, the real-world example and the questions; a band spans the page width. */
+:root{--band:#e8edda;--band-line:#c5ceb4}
+.install-section,.band{background:var(--band)}
+.band .case-facts div,.band .faq details,.band .faq details:last-child{border-color:var(--band-line)}
+.band .case-image{background:#f1f3e8}
+.band .case-image figcaption{border-top-color:var(--band-line)}
+.hook-section,.footer{border-top:0}
+
+/* All visuals on the right (one column on the phone: the image follows its text). */
+@media(min-width:721px){
+  .case-grid{grid-template-columns:1fr 1.1fr}
+  .brief-panel{order:2}
+}
+
+/* One size for the section labels and headings, one top spacing for all sections, the hero title level with the top of the
+   viewer, and the workflow and real-world visuals alone in the right half. */
+.section .eyebrow,.install-heading .eyebrow,.hook-copy .eyebrow{font-size:18px;margin-bottom:20px}
+main h2,.install-heading h2,.faq h2{font-size:42px;line-height:1.12;letter-spacing:-1.8px}
+.section,.install-section{padding-top:80px;padding-bottom:80px}
+.install-heading{align-items:end}
+.hook-grid{align-items:start}
+@media(max-width:1000px){main h2,.install-heading h2,.faq h2{font-size:38px}.section,.install-section{padding-top:64px;padding-bottom:64px}}
+@media(max-width:720px){.section .eyebrow,.install-heading .eyebrow,.hook-copy .eyebrow{font-size:15px;margin-bottom:16px}main h2,.install-heading h2,.faq h2{font-size:34px;letter-spacing:-1.4px}.section,.install-section{padding-top:54px;padding-bottom:54px}}
+@media(min-width:1001px){
+  .hero{min-height:0;align-items:stretch}
+  .hero-copy{align-self:start;padding-top:0}
+  .hero-part{align-self:stretch;min-height:0}
+  .hero-part .model-viewer{min-height:540px}
+  #how,.case-study .section{display:grid;grid-template-columns:1fr 1fr;column-gap:72px;align-items:start}
+  #how .section-heading,.case-study .section-heading{grid-column:1;grid-row:1;max-width:none}
+  #how .workflow,.case-study .case-grid{display:contents}
+  #how .steps,.case-study .case-copy{grid-column:1;grid-row:2;margin-top:40px}
+  #how .brief-panel{grid-column:2;grid-row:1/span 2;margin:0;align-self:stretch;display:flex;flex-direction:column}
+  #how .brief-sketch{flex:1 1 auto;display:flex;flex-direction:column}
+  #how .brief-sketch>a{flex:1 1 auto;display:flex;align-items:center;background:#f8fafc}
+  .case-study .case-image{grid-column:2;grid-row:1/span 2;align-self:stretch;display:flex;flex-direction:column;margin:0}
+  .case-study .case-image img{flex:1 1 0;min-height:0;height:auto;aspect-ratio:auto;object-fit:cover}
+}
