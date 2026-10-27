@@ -135,3 +135,6 @@ main h2,.install-heading h2,.faq h2{font-size:42px;line-height:1.12;letter-spaci
 .ico{display:inline-block;flex:none;width:1em;height:1em;background:currentColor;vertical-align:-.12em;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
 .ico-github{-webkit-mask-image:url(icons/github.svg);mask-image:url(icons/github.svg)}
 .nav-github,.footer-github{display:inline-flex;align-items:center;gap:7px}
+
+/* The Get started button in the top bar: the same gap between its text and arrow as the hero Install button. */
+.nav .button.small{gap:12px}
