@@ -36,6 +36,14 @@ The check requires exactly one HTML page. It verifies local files and anchors, s
 
 The artwork source is `scripts/social-preview.html`. To regenerate it, temporarily copy it to `site/social-preview-artwork.html`, serve the site, and capture a 1200 × 630 browser screenshot after the Manrope font and model image finish loading. Save the screenshot as JPEG to the asset path and remove the temporary page before running the site check. Keep the published site to one HTML page.
 
+## Search engines
+
+The site address is `https://topopt.ai/` (`SITE_ORIGIN` in `scripts/check_site.py`). The root page has the canonical link to it,
+Open Graph and Twitter URLs on it, and JSON-LD (`WebSite` and `SoftwareApplication`). Each `site/vN/` variant has
+`<meta name="robots" content="noindex">`. `site/robots.txt` names `https://topopt.ai/sitemap.xml`, and `site/sitemap.xml` lists the root page.
+Search engines read `robots.txt` and the sitemap only at the root of the host, so they work once the site is served at `https://topopt.ai/`.
+The check guards all of this. If the address changes, change `SITE_ORIGIN`, the root page, `robots.txt` and `sitemap.xml` together.
+
 ## Viewer
 
 The viewer uses Three.js 0.186.1 and is bundled with esbuild 0.28.2. All runtime assets are checked in; serving the website requires no build step or CDN. The model rotates automatically with a Stop button. Reduced-motion preferences disable automatic rotation, and rendering pauses offscreen and in hidden tabs.
