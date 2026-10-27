@@ -8,6 +8,7 @@ This repository contains the single-page website for topopt. The product code is
 - `site/assets/` contains the bicycle model, renders, original frame drawing, and mesh provenance, and the topopt icon: `topopt-icon.svg` (the header and footer mark), `favicon.svg` (the same shape, light in dark mode), `favicon-32.png` and `apple-touch-icon.png`. Each `site/vN/assets/` has its own copy of the icon files.
 - `site/media/` contains the recorded wall-hook optimization and its poster.
 - `site/fonts/manrope/` contains the self-hosted font and its SIL OFL license.
+- `site/icons/` contains the GitHub mark of the root page (Simple Icons, CC0) and `LICENSES.md` with its source.
 - `site/vendor/three/` contains the bundled Three.js viewer and MIT license.
 - `scripts/viewer/` contains the editable viewer source and pinned build dependencies.
 - `scripts/check_site.py` checks links, resources, accessibility markup, and content.
