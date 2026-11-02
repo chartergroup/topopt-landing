@@ -18,11 +18,38 @@
 const clip = document.querySelector('#hero-clip');
 const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const applyMotion = () => {
+  if (!clip) return; // pages without the clip (contact)
   if (motion.matches) { clip.pause(); clip.removeAttribute('autoplay'); }
   else { clip.setAttribute('autoplay', ''); clip.play().catch(() => {}); }
 };
 motion.addEventListener('change', applyMotion);
 applyMotion();
+// The contact form: send it in the background and show the result on the page. Without JavaScript the browser posts it itself.
+const contactForm = document.querySelector('#contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = contactForm.querySelector('button[type="submit"]');
+    const failed = document.getElementById('send-error');
+    button.disabled = true;
+    failed.hidden = true;
+    const data = new URLSearchParams(new FormData(contactForm));
+    data.set('js', '1');
+    try {
+      const response = await fetch(contactForm.action, { method: 'POST', body: data });
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.error || 'not sent');
+      contactForm.hidden = true;
+      const sent = document.getElementById('sent');
+      sent.hidden = false;
+      sent.focus();
+    } catch {
+      failed.hidden = false;
+      button.disabled = false;
+    }
+  });
+}
+
 document.querySelectorAll('[data-copy]').forEach(button => {
   button.addEventListener('click', async () => {
     try {
