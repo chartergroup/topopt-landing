@@ -4,7 +4,8 @@
 Usage:
     python3 scripts/check_site.py site
 
-The site folder holds a single landing page at index.html.
+The site folder holds the landing page at index.html, page variants at v<N>/index.html
+and the contact page at contact/index.html.
 
 Exit code 0: all checks pass. Exit code 1: one line for each problem. Exit code 2: bad usage.
 
@@ -13,12 +14,13 @@ Checks:
   every #anchor resolves to an id on the target page;
 - no script, stylesheet, image, video, audio, iframe, font or other resource from another host
   (also not in a CSS url(), an @import or an @font-face source);
-  an external <a href> goes to https://github.com/chartergroup/ only;
+  an external <a href> goes to https://github.com/chartergroup/ only, and a form posts to the contact form's
+  Google Apps Script web app only (CONTACT_FORM_ACTION);
 - no known tracker word in the HTML, CSS or JavaScript;
 - every img has a non-empty alt; each page has lang, title, a meta description, one h1
   and no skipped heading level;
-- the landing page has the six client names;
-- the landing page has no meta word (private, not tested, status, preview, ...) in its visible text,
+- the landing page and each variant have the six client names;
+- no page has a meta word (private, not tested, status, preview, ...) in its visible text,
   title, meta description, alt text, aria-label or title attribute (text inside code and pre is not checked);
 - every font folder with .woff2 files has a licence file (OFL*, LICENSE*);
 - search engines: a canonical link goes to SITE_ORIGIN only, and the root page has the canonical link
@@ -54,6 +56,11 @@ ALLOWED_EXTERNAL_LINK = re.compile(r"^https://github\.com/chartergroup(?:[/?#]|$
 SITE_ORIGIN = "https://topopt.ai/"
 JSON_LD_URL = re.compile(r"^(?:" + re.escape(SITE_ORIGIN) + r"|https://github\.com/chartergroup(?:[/?#]|$)|https://schema\.org(?:/|$))")
 SITEMAP_NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+# The contact form posts to a Google Apps Script web app (scripts/contact-form/Code.gs), which emails the team.
+CONTACT_FORM_ACTION = re.compile(r"^https://script\.google\.com/macros/s/[A-Za-z0-9_-]+/exec$")
+# The pages of the site, relative to the site folder: the landing page, the contact page, and variants v<N>/index.html.
+VARIANT_PAGE = re.compile(r"v[0-9]+/index\.html")
+OTHER_PAGES = ("index.html", "contact/index.html")
 # the attributes that hold a URL, for every tag
 URL_ATTRS = ("href", "src", "poster", "action", "srcset", "data")
 CSS_URL = re.compile(r"url\(\s*(['\"]?)(.*?)\1\s*\)", re.IGNORECASE)
@@ -234,6 +241,9 @@ def check_reference(site, base_file, line, tag, attr, value, pages, problems):
         if tag == "a" and attr == "href":
             if not ALLOWED_EXTERNAL_LINK.match(value.strip()):
                 problems.append("{}: external link is not to https://github.com/chartergroup/ in {}".format(where, label))
+        elif tag == "form" and attr == "action":
+            if not CONTACT_FORM_ACTION.match(value.strip()):
+                problems.append("{}: a form posts to another address than the contact form's web app in {}".format(where, label))
         else:
             problems.append("{}: resource from another host in {}".format(where, label))
     else:
@@ -321,10 +331,10 @@ def check_basics(name, page, problems):
             problems.append("{}:{}: img has no alt text".format(name, line))
 
 
-def check_content(name, page, problems):
-    """The six clients and the meta-word guard."""
+def check_content(name, page, problems, landing=True):
+    """The six clients (landing page and variants) and the meta-word guard (every page)."""
     text = " ".join(data for _, data in page.text)
-    for client in CLIENTS:
+    for client in CLIENTS if landing else ():
         if client not in text:
             problems.append("{}: client name \"{}\" is not on the page".format(name, client))
     # The visible text is joined, so that a phrase over an element border ("not <b>tested</b>") is found too.
@@ -392,7 +402,7 @@ def check_search(site, pages, problems):
                 problems.append("{}: the root page needs one canonical link to {}".format(name, SITE_ORIGIN))
             if is_noindex(page):
                 problems.append("{}: the root page has noindex".format(name))
-        elif not is_noindex(page):
+        elif VARIANT_PAGE.fullmatch(path.relative_to(site).as_posix()) and not is_noindex(page):
             problems.append("{}: a variant page needs <meta name=\"robots\" content=\"noindex\">".format(name))
     sitemap_url = SITE_ORIGIN + "sitemap.xml"
     robots = site / "robots.txt"
@@ -457,12 +467,14 @@ def run(site):
     check_fonts(site, problems)
     check_search(site, pages, problems)
     for path, page in pages.items():
+        relative = path.relative_to(site).as_posix()
         check_basics(name_of(site, path), page, problems)
-        check_content(name_of(site, path), page, problems)
+        check_content(name_of(site, path), page, problems, landing=relative == "index.html" or bool(VARIANT_PAGE.fullmatch(relative)))
     # The landing page is index.html. A variant to compare with it is one page at v<N>/index.html.
     for path in pages:
-        if not re.fullmatch(r"index\.html|v[0-9]+/index\.html", name_of(site, path).split("/", 1)[1]):
-            problems.append("{}: an HTML page must be index.html or v<N>/index.html".format(name_of(site, path)))
+        relative = path.relative_to(site).as_posix()
+        if relative not in OTHER_PAGES and not VARIANT_PAGE.fullmatch(relative):
+            problems.append("{}: an HTML page must be one of {} or v<N>/index.html".format(name_of(site, path), ", ".join(OTHER_PAGES)))
     return problems
 
 
