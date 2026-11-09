@@ -54,6 +54,10 @@ A hidden field named `website` catches bots: when it is filled, the script answe
 `page.js` sends the form in the background and shows the result on the page; without JavaScript the browser posts the form
 and the script shows a short page with a link back.
 
+The same web app also receives the contact form of the charter site (a post with `form=charter`). It emails that message,
+with all its fields, to the script property `CHARTER_RECIPIENTS`; the optional `CHARTER_SITE_URL` is the link back on the
+no-JavaScript page. The deployment URL stays the same (Manage deployments, Edit, New version).
+
 To change the script, paste the new `Code.gs` into the Apps Script project and use Deploy, Manage deployments, Edit,
 Version: New version. That keeps the `/exec` address. A new deployment gets a new address, which then has to go into the
 form's `action` (the site check accepts only a `https://script.google.com/macros/s/<id>/exec` address).
